@@ -31,9 +31,11 @@ int main()
 			cin >> option;
 		}
 		catch (istream::failure e) {
+			system("cls");
 			wcout << RED << L" Введіть коректні дані!\n";
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			continue;
 		}
 
 		//Красиво, но не функционально, conio.h
@@ -46,10 +48,14 @@ int main()
 		{
 		case(1):
 		{
+			system("cls");
+			wcout << "case1\n";
 			break;
 		}
 		case(2):
 		{
+			system("cls");
+			wcout << "case2\n";
 			break;
 		}
 		case(3):
@@ -59,6 +65,7 @@ int main()
 			break;
 		}
 		default:
+			system("cls");
 			wcout << RED << L" Введіть коректні дані!\n";
 			break;
 		}
