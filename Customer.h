@@ -8,7 +8,6 @@ private:
 public:
 	Customer(int _id, int _role, std::string _login, std::string _password);
 
-	void showAllProducts();
 	void findProduct();
 	void showInfoProduct();
 	void buyProduct();

@@ -3,11 +3,6 @@
 Customer::Customer(int _id, int _role, std::string _login, std::string _password)
 	: User(_id, _role, _login, _password) {}
 
-void Customer::showAllProducts()
-{
-
-}
-
 void Customer::findProduct()
 {
 
