@@ -6,6 +6,7 @@ class Customer : public User
 private:
 
 public:
+	Customer() {};
 	Customer(int _id, int _role, std::string _login, std::string _password);
 
 	void findProduct();

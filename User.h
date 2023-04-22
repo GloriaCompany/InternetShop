@@ -8,6 +8,7 @@ private:
 	std::string login;
 	std::string password;
 public:
+	User() {};
 	User(int _id, int _role, std::string _login, std::string _password);
 	virtual ~User();
 
@@ -16,10 +17,10 @@ public:
 	std::string getLogin();
 	std::string getPassword();
 
-	void setId();
-	void setRole();
-	void setLogin();
-	void setPassword();
+	void setId(int id);
+	void setRole(int role);
+	void setLogin(std::string login);
+	void setPassword(std::string password);
 
 	virtual void showAllProducts();
 	virtual void showInfoProductByName();

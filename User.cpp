@@ -10,10 +10,10 @@ int User::getRole() { return this->role; }
 std::string User::getLogin() { return this->login; }
 std::string User::getPassword() { return this->password; }
 
-void User::setId() { this->id = id; }
-void User::setRole() { this->role = role; }
-void User::setLogin() { this->login = login; }
-void User::setPassword() { this->password = password; }
+void User::setId(int id) { this->id = id; }
+void User::setRole(int role) { this->role = role; }
+void User::setLogin(std::string login) { this->login = login; }
+void User::setPassword(std::string password) { this->password = password; }
 
 void User::showAllProducts()
 {
