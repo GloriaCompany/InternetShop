@@ -15,7 +15,7 @@ public:
 	void showAllOrders();
 	void cancelOrder();
 
-	void showAllProducts() override;
-	void showInfoProductByName() override;
-	void showInfoProductByArticle() override;
+	void showAllProducts(std::deque<Product>& products) override;
+	void showInfoProductByName(std::deque<Product>& products, std::string productName) override;
+	void showInfoProductByArticle(std::deque<Product>& products, std::string article) override;
 };

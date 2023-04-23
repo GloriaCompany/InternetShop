@@ -28,17 +28,17 @@ void Customer::cancelOrder()
 
 }
 
-void Customer::showAllProducts()
+void Customer::showAllProducts(std::deque<Product>& products)
 {
 
 }
 
-void Customer::showInfoProductByName()
+void Customer::showInfoProductByName(std::deque<Product>& products, std::string productName)
 {
 
 }
 
-void Customer::showInfoProductByArticle()
+void Customer::showInfoProductByArticle(std::deque<Product>& products, std::string article)
 {
 
 }
