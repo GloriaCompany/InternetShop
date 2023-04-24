@@ -101,18 +101,10 @@ void Admin::editCustomer(std::deque<Customer>& customers, const int customerID)
 	}
 }
 
-void Admin::delCustomer(std::deque<User*>& users, const int customerID)
+void Admin::delCustomer(std::deque<Customer>& customers, const int customerID)
 {
-	auto it = find_if(users.begin(), users.end(), [customerID](User* user) { return _Notnull_ user->getId() == customerID; });
-	if (it != users.end()) {
-		if (dynamic_cast<Customer*>(*it)) {
-			std::cout << "Покупець з ID " << customerID << " був видалений.\n";
-		}
-		delete* it;
-		users.erase(it);
-	} else {
-		std::cout << "Покупця з ID " << customerID << " не знайдено.\n";
-	}
+	customers.erase(std::remove_if(customers.begin(), customers.end(),
+		[customerID](const Customer& customer) { return customer.getId() == customerID; }), customers.end());
 }
 
 void Admin::addProduct(std::deque<Product>& products, const Product& product)
@@ -174,14 +166,8 @@ void Admin::editProduct(std::deque<Product>& products, const int productID)
 
 void Admin::delProduct(std::deque<Product>& products, const int productID)
 {
-	auto it = find_if(products.begin(), products.end(), [productID](Product product) { return _Notnull_ product.getId() == productID; });
-	if (it != products.end()) {
-		products.erase(it);
-		std::cout << "Продукт з ID " << productID << " був видалений.\n";
-	}
-	else {
-		std::cout << "Продукту з ID " << productID << " не знайдено.\n";
-	}
+	products.erase(std::remove_if(products.begin(), products.end(),
+		[productID](const Product& product) { return product.getId() == productID; }), products.end());
 }
 
 void Admin::showAllOrdersAllProducts(std::deque<Order>& orders)
@@ -193,7 +179,8 @@ void Admin::showAllOrdersAllProducts(std::deque<Order>& orders)
 		{
 			std::cout << "ID: " << product.getId()
 				<< "\nІм'я продукту: " << product.getName()
-				<< "\nВартість: " << product.getCost() << '\n';
+				<< "\nВартість: " << product.getCost() 
+				<< "\nАртикль: " << product.getArticle() << '\n';
 		}
 		std::cout << "Загальна сума замовлення: " << order.getTotalAmount() << '\n';
 		if (order.getActive() == true) {
@@ -207,17 +194,43 @@ void Admin::showAllOrdersAllProducts(std::deque<Order>& orders)
 
 void Admin::delOrderProduct(std::deque<Product>& products, const int productID, const int orderID)
 {
-	//...
+	for (auto& product : products) {
+		if (product.getId() == productID) {
+			for (auto find = product.getOrdersForProduct().begin(); find != product.getOrdersForProduct().end(); ++find) {
+				if (find->getId() == orderID) {
+					product.getOrdersForProduct().erase(find);
+					break;
+				}
+			}
+		}
+	}
 }
 
-void Admin::delAllOrdersProduct(std::deque<Order>& orders, const int productID)
+void Admin::delAllOrdersProduct(std::deque<Product>& products, const int productID)
 {
-	//...
+	for (auto& product : products) {
+		if (product.getId() == productID) {
+			for (auto find = product.getOrdersForProduct().begin(); find != product.getOrdersForProduct().end(); ++find) {
+				product.getOrdersForProduct().erase(find);
+				break;
+			}
+		}
+	}
 }
 
-void Admin::delAllOrdersAllProducts(std::deque<Order>& orders)
+void Admin::delAllOrdersAllProducts(std::deque<Order>& orders, std::deque<Product>& products)
 {
-	// Типо все данные удалить, или шо??????
+	if (orders.empty()) {
+		std::cout << "Наразі у магазині немає поточних замовлень\n";
+	}
+	else if (products.empty()) {
+		std::cout << "Наразі у магазині немає продуктів\n";
+	}
+	else {
+		orders.clear();
+		products.clear();
+		std::cout << "Усі замовлення та продукти успішно видалені\n";
+	}
 }
 
 void Admin::showAllProducts(std::deque<Product>& products)
@@ -226,7 +239,8 @@ void Admin::showAllProducts(std::deque<Product>& products)
 	for (auto& product : products) {
 		std::cout << "ID: " << product.getId()
 			<< "\nНазва продукту: " << product.getName()
-			<< "\nВартість продукту: " << product.getCost() << '\n';
+			<< "\nВартість продукту: " << product.getCost()
+			<< "\nАртикль: " << product.getArticle() << '\n';
 	}
 }
 
@@ -238,12 +252,22 @@ void Admin::showInfoProductByName(std::deque<Product>& products, std::string pro
 				<< "Інформація про знайдений продукт:\n"
 				<< "ID: " << product.getId()
 				<< "\nНазва продукту: " << product.getName()
-				<< "\nВартість продукту: " << product.getCost() << '\n';
+				<< "\nВартість продукту: " << product.getCost() 
+				<< "\nАртикль: " << product.getArticle() << '\n';
 		}
 	}
 }
 
 void Admin::showInfoProductByArticle(std::deque<Product>& products, std::string article)
 {
-	// Шо такое этот ваш "Артикль"??????
+	for (auto& product : products) {
+		if (product.getName() == article) {
+			std::cout << "Продукт з артиклем " << article << " успішно зайдено.\n"
+				<< "Інформація про знайдений продукт:\n"
+				<< "ID: " << product.getId()
+				<< "\nНазва продукту: " << product.getName()
+				<< "\nВартість продукту: " << product.getCost() 
+				<< "\nАртикль: " << product.getArticle() << '\n';
+		}
+	}
 }
