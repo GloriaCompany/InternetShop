@@ -28,4 +28,5 @@ public:
 	virtual void showAllProducts(std::deque<Product>& products);
 	virtual void showInfoProductByName(std::deque<Product>& products, std::string productName);
 	virtual void showInfoProductByArticle(std::deque<Product>& products, std::string article);
+	bool auth(std::string _login, std::string _password);
 };
