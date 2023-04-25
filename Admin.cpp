@@ -1,5 +1,6 @@
 #include "Admin.h"
 #include "Customer.h"
+#include "Product.h"
 #include <deque>
 #include <array>
 #include <iostream>
@@ -103,8 +104,7 @@ void Admin::editCustomer(std::deque<Customer>& customers, const int customerID)
 
 void Admin::delCustomer(std::deque<Customer>& customers, const int customerID)
 {
-	customers.erase(std::remove_if(customers.begin(), customers.end(),
-		[customerID](const Customer& customer) { return customer.getId() == customerID; }), customers.end());
+	//...
 }
 
 void Admin::addProduct(std::deque<Product>& products, const Product& product)
@@ -166,8 +166,7 @@ void Admin::editProduct(std::deque<Product>& products, const int productID)
 
 void Admin::delProduct(std::deque<Product>& products, const int productID)
 {
-	products.erase(std::remove_if(products.begin(), products.end(),
-		[productID](const Product& product) { return product.getId() == productID; }), products.end());
+	//...
 }
 
 void Admin::showAllOrdersAllProducts(std::deque<Order>& orders)
@@ -194,28 +193,12 @@ void Admin::showAllOrdersAllProducts(std::deque<Order>& orders)
 
 void Admin::delOrderProduct(std::deque<Product>& products, const int productID, const int orderID)
 {
-	for (auto& product : products) {
-		if (product.getId() == productID) {
-			for (auto find = product.getOrdersForProduct().begin(); find != product.getOrdersForProduct().end(); ++find) {
-				if (find->getId() == orderID) {
-					product.getOrdersForProduct().erase(find);
-					break;
-				}
-			}
-		}
-	}
+	//...
 }
 
 void Admin::delAllOrdersProduct(std::deque<Product>& products, const int productID)
 {
-	for (auto& product : products) {
-		if (product.getId() == productID) {
-			for (auto find = product.getOrdersForProduct().begin(); find != product.getOrdersForProduct().end(); ++find) {
-				product.getOrdersForProduct().erase(find);
-				break;
-			}
-		}
-	}
+	//...
 }
 
 void Admin::delAllOrdersAllProducts(std::deque<Order>& orders, std::deque<Product>& products)

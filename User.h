@@ -2,6 +2,7 @@
 #include <string>
 #include <deque>
 #include "Product.h"
+
 class User
 {
 private:

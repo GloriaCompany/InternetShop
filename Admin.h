@@ -1,4 +1,3 @@
-#pragma once
 #include "User.h"
 #include "Customer.h"
 #include "Product.h"
