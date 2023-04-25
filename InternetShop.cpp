@@ -10,6 +10,7 @@ using namespace std;
 
 int main()
 {
+	string login, password;
     int option;
 	cin.exceptions(cin.failbit);
 
@@ -55,7 +56,11 @@ int main()
 		case(2):
 		{
 			system("cls");
-			wcout << "case2\n";
+			wcout << "Enter your login: ";
+			cin >> login;
+			wcout << "Enter your password: ";
+			cin >> password;
+			return 0;
 			break;
 		}
 		case(3):
