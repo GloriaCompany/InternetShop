@@ -8,11 +8,41 @@ const std::array<char, 25> invalidSymbols = { '!','@','.','/','[',']','(',')','$
 
 Admin::Admin(int _id, int _role, std::string _login, std::string _password) : User(_id, _role, _login, _password) {}
 
+// Отримати дані про клєнтів
+void Admin::setCustomersForAdmin(const std::deque<Customer>& customers) 
+{
+	if (customers.empty()) {
+		std::cout << "Наразі у магазині немає покупців.\n";
+	} else {
+		this->shopCustomers = customers;
+	}
+}
+
+// Отримати дані про продукти
+void Admin::setProductsForAdmin(const std::deque<Product>& products) 
+{
+	if (products.empty()) {
+		std::cout << "Наразі у магазині немає продуктів.\n";
+	} else {
+		this->shopProducts = products;
+	}
+}
+
+// Отримати дані про замовлення
+void Admin::setOrdersForAdmin(const std::deque<Order>& orders)
+{
+	if (orders.empty()) {
+		std::cout << "Наразі у магазині немає замовлень.\n";
+	} else {
+		this->shopOrders = orders;
+	}
+}
+
 // Додати клієнта
-void Admin::addCustomer(std::deque<Customer>& customers, Customer& newCustomer)
+void Admin::addCustomer(Customer& newCustomer)
 {
 	bool isExists = false;
-    for (auto& customer : customers) {
+    for (auto& customer : this->shopCustomers) {
         if (newCustomer.getId() == customer.getId()) {
 			std::cout << "Покупець з таким ID вже існує. Повторіть спробу, будь-ласка.\n";
 			isExists = true;
@@ -24,12 +54,12 @@ void Admin::addCustomer(std::deque<Customer>& customers, Customer& newCustomer)
 		}
     }
     if (!isExists) {
-        customers.push_back(newCustomer);
+		this->shopCustomers.push_back(newCustomer);
     }
 }
 
 // Редагувати інформацію про клієнта
-void Admin::editCustomer(std::deque<Customer>& customers, int customerID)
+void Admin::editCustomer(int customerID)
 {
 	int userInput = 0;
 	constexpr int USER_CODE = 1, ADMIN_CODE = 2;
@@ -38,7 +68,7 @@ void Admin::editCustomer(std::deque<Customer>& customers, int customerID)
 	constexpr int PASSWORD_MIN_LENGTH = 8, PASSWORD_MAX_LENGTH = 15;
 	std::string newLogin, newPassword;
 
-	for (auto& customer : customers) {
+	for (auto& customer : this->shopCustomers) {
 		if (customer.getId() == customerID) {
 			do {
 				std::cout << "Оберіть параметр для зміни:\n1. Логін покупця.\n2. Пароль покупця.\n3. До попереднього меню.\nВаш вибір: ";
@@ -51,7 +81,7 @@ void Admin::editCustomer(std::deque<Customer>& customers, int customerID)
 			switch (userInput) {
 			case 1:
 				while (true) {
-					std::cout << "Введіть новий логін для покупця " << customers.at(customerID).getLogin() << ": ";
+					std::cout << "Введіть новий логін для покупця " << this->shopCustomers.at(customerID).getLogin() << ": ";
 					std::cin >> newLogin;
 					if (newLogin.find(' ') != std::string::npos) {
 						std::cout << "Логін містить некоректні символи. Повторіть спробу, будь-ласка.\n";
@@ -64,13 +94,16 @@ void Admin::editCustomer(std::deque<Customer>& customers, int customerID)
 					}
 					else break;
 				}
-				customers.at(customerID).setLogin(newLogin);
-				std::cout << "Логін успішно змінено. Нові дані користувача:\nID: " << customers.at(customerID).getId() << "\nЛогін: " << customers.at(customerID).getLogin() << "\nПароль : " << customers.at(customerID).getPassword() << "\nКод ролі : " << customers.at(customerID).getRole();
+				this->shopCustomers.at(customerID).setLogin(newLogin);
+				std::cout << "Логін успішно змінено. Нові дані користувача:\nID: " << this->shopCustomers.at(customerID).getId() 
+					<< "\nЛогін: " << this->shopCustomers.at(customerID).getLogin() 
+					<< "\nПароль : " << this->shopCustomers.at(customerID).getPassword()
+					<< "\nКод ролі : " << this->shopCustomers.at(customerID).getRole();
 				break;
 
 			case 2:
 				while (true) {
-					std::cout << "Введіть новий пароль для покупця " << customers.at(customerID).getLogin() << ": ";
+					std::cout << "Введіть новий пароль для покупця " << this->shopCustomers.at(customerID).getLogin() << ": ";
 					std::cin >> newPassword;
 					if (newLogin.find(' ') != std::string::npos) {
 						std::cout << "Пароль містить некоректні символи. Повторіть спробу, будь-ласка.\n";
@@ -83,8 +116,11 @@ void Admin::editCustomer(std::deque<Customer>& customers, int customerID)
 					}
 					else break;
 				}
-				customers.at(customerID).setPassword(newPassword);
-				std::cout << "Пароль успішно змінено. Нові дані користувача:\nID: " << customers.at(customerID).getId() << "\nЛогін: " << customers.at(customerID).getLogin() << "\nПароль: " << customers.at(customerID).getPassword() << "\nКод ролі: " << customers.at(customerID).getRole();
+				this->shopCustomers.at(customerID).setPassword(newPassword);
+				std::cout << "Пароль успішно змінено. Нові дані користувача:\nID: " << this->shopCustomers.at(customerID).getId()
+					<< "\nЛогін: " << this->shopCustomers.at(customerID).getLogin()
+					<< "\nПароль : " << this->shopCustomers.at(customerID).getPassword()
+					<< "\nКод ролі : " << this->shopCustomers.at(customerID).getRole();
 				break;
 
 			case 3:
@@ -99,12 +135,12 @@ void Admin::editCustomer(std::deque<Customer>& customers, int customerID)
 
 				switch (userInput) {
 				case 1:
-					customers.at(customerID).setRole(USER_CODE);
+					this->shopCustomers.at(customerID).setRole(USER_CODE);
 					std::cout << "Роль користувача успішно змінено.\n";
 					break;
 
 				case 2: 
-					customers.at(customerID).setRole(ADMIN_CODE);
+					this->shopCustomers.at(customerID).setRole(ADMIN_CODE);
 					std::cout << "Роль користувача успішно змінено.\n";
 					break;
 
@@ -123,24 +159,24 @@ void Admin::editCustomer(std::deque<Customer>& customers, int customerID)
 }
 
 // Видалити клієнта
-void Admin::delCustomer(std::deque<Customer>& customers, int customerID)
+void Admin::delCustomer(int customerID)
 {
-	for (auto customer = customers.begin(); customer != customers.end(); customer++) {
+	for (auto customer = this->shopCustomers.begin(); customer != this->shopCustomers.end(); customer++) {
 		if (customer->getId() == customerID) {
-			customers.erase(customer);
+			this->shopCustomers.erase(customer);
 			std::cout << "Покупця з ID " << customerID << " було успішно видалено.\n";
 		}
 	}
 }
 
 // Переглянути всі товари
-void Admin::showAllProducts(std::deque<Product>& products)
+void Admin::showAllProducts()
 {
-	if (products.empty()) {
+	if (this->shopProducts.empty()) {
 		std::cout << "Наразі у магазині немає продуктів.\n";
 	} else {
 		std::cout << "Список усіх продуктів у магазині\n";
-		for (auto& product : products) {
+		for (auto& product : this->shopProducts) {
 			std::cout << "ID: " << product.getId()
 				<< "\nНазва продукту: " << product.getName()
 				<< "\nВартість продукту: " << product.getCost()
@@ -150,12 +186,12 @@ void Admin::showAllProducts(std::deque<Product>& products)
 }
 
 // Знайти товар за назвою
-void Admin::showInfoProductByName(std::deque<Product>& products, std::string productName)
+void Admin::showInfoProductByName(std::string productName)
 {
-	if (products.empty()) {
+	if (this->shopProducts.empty()) {
 		std::cout << "Наразі у магазині немає продуктів.\n";
 	} else {
-		for (auto& product : products) {
+		for (auto& product : this->shopProducts) {
 			if (product.getName() == productName) {
 				std::cout << "Продукт з іменем " << productName << " успішно зайдено.\n"
 					<< "Інформація про знайдений продукт:\n"
@@ -169,12 +205,12 @@ void Admin::showInfoProductByName(std::deque<Product>& products, std::string pro
 }
 
 // Знайти товар за артиклем
-void Admin::showInfoProductByArticle(std::deque<Product>& products, std::string article)
+void Admin::showInfoProductByArticle(std::string article)
 {
-	if (products.empty()) {
+	if (this->shopProducts.empty()) {
 		std::cout << "Наразі у магазині немає продуктів.\n";
 	} else {
-		for (auto& product : products) {
+		for (auto& product : this->shopProducts) {
 			if (product.getName() == article) {
 				std::cout << "Продукт з артиклем " << article << " успішно зайдено.\n"
 					<< "Інформація про знайдений продукт:\n"
@@ -188,12 +224,12 @@ void Admin::showInfoProductByArticle(std::deque<Product>& products, std::string 
 }
 
 // Відкрити інформацію про товар
-void Admin::showProductInfoById(std::deque<Product>& products, int productID)
+void Admin::showProductInfoById(int productID)
 {
-	if (products.empty()) {
+	if (this->shopProducts.empty()) {
 		std::cout << "Наразі у магазині немає продуктів.\n";
 	} else {
-		for (auto& product : products) {
+		for (auto& product : this->shopProducts) {
 			if (product.getId() == productID) {
 				std::cout << "Продукт з ID " << productID << " успішно зайдено.\n"
 					<< "Інформація про знайдений продукт:\n"
@@ -207,10 +243,10 @@ void Admin::showProductInfoById(std::deque<Product>& products, int productID)
 }
 
 // Додати товар
-void Admin::addProduct(std::deque<Product>& products, Product& newProduct)
+void Admin::addProduct(Product& newProduct)
 {
 	bool isExists = false;
-	for (auto& product : products) {
+	for (auto& product : this->shopProducts) {
 		if (newProduct.getId() == product.getId()) {
 			std::cout << "Продукт з таким ID вже існує. Повторіть спробу, будь-ласка.\n";
 			isExists = true;
@@ -218,12 +254,12 @@ void Admin::addProduct(std::deque<Product>& products, Product& newProduct)
 		}
 	}
 	if (!isExists) {
-		products.push_back(newProduct);
+		this->shopProducts.push_back(newProduct);
 	}
 }
 
 // Редагувати інформацію про товар
-void Admin::editProduct(std::deque<Product>& products, int productID)
+void Admin::editProduct(int productID)
 {
 	int userInput = 0;
 	constexpr int NAME_MIN_LENGTH = 5, NAME_MAX_LENGTH = 20;
@@ -232,7 +268,7 @@ void Admin::editProduct(std::deque<Product>& products, int productID)
 	double newCost = 0;
 	std::string newName;
 
-	for (auto& product : products) {
+	for (auto& product : this->shopProducts) {
 		if (product.getId() == productID) {
 			do {
 				std::cout << "Оберіть параметр для зміни:\n1. Ім'я продукту.\n2. Вартість продукту.\nВаш вибір: ";
@@ -245,7 +281,7 @@ void Admin::editProduct(std::deque<Product>& products, int productID)
 			switch (userInput) {
 			case 1:
 				while (true) {
-					std::cout << "Введіть нове ім'я продукту " << products.at(productID).getName() << ": ";
+					std::cout << "Введіть нове ім'я продукту " << this->shopProducts.at(productID).getName() << ": ";
 					std::cin >> newName;
 					if (newName.find_first_of(invalidSymbols.data(), 0, invalidSymbols.size()) != std::string::npos) {
 						std::cout << "Ім'я продукту містить некоректні символи. Повторіть спробу, будь-ласка.\n";
@@ -255,8 +291,10 @@ void Admin::editProduct(std::deque<Product>& products, int productID)
 					}
 					else break;
 				}
-				products.at(productID).setName(newName);
-				std::cout << "Ім'я продукту успішно змінено. Нові дані продукту:\nID: " << products.at(productID).getId() << "\nІм'я: " << products.at(productID).getName() << "\nВартість: " << products.at(productID).getCost() << " грн.\n";
+				this->shopProducts.at(productID).setName(newName);
+				std::cout << "Ім'я продукту успішно змінено. Нові дані продукту:\nID: " << this->shopProducts.at(productID).getId() 
+					<< "\nІм'я: " << this->shopProducts.at(productID).getName()
+					<< "\nВартість: " << this->shopProducts.at(productID).getCost() << " грн.\n";
 				break;
 
 			case 2:
@@ -268,8 +306,10 @@ void Admin::editProduct(std::deque<Product>& products, int productID)
 					}
 				} while (newCost < MIN_COST || newCost > MAX_COST);
 
-				products.at(productID).setCost(newCost);
-				std::cout << "Вартість продукту успішно змінено. Нові дані продукту:\nID: " << products.at(productID).getId() << "\nІм'я: " << products.at(productID).getName() << "\nВартість: " << products.at(productID).getCost() << " грн.\n";
+				this->shopProducts.at(productID).setCost(newCost);
+				std::cout << "Вартість продукту успішно змінено. Нові дані продукту:\nID: " << this->shopProducts.at(productID).getId()
+					<< "\nІм'я: " << this->shopProducts.at(productID).getName()
+					<< "\nВартість: " << this->shopProducts.at(productID).getCost() << " грн.\n";
 				break;
 
 			default:
@@ -281,24 +321,24 @@ void Admin::editProduct(std::deque<Product>& products, int productID)
 }
 
 // Видалити товар
-void Admin::delProduct(std::deque<Product>& products, int productID)
+void Admin::delProduct(int productID)
 {
-	for (auto product = products.begin(); product != products.end(); product++) {
+	for (auto product = this->shopProducts.begin(); product != this->shopProducts.end(); product++) {
 		if (product->getId() == productID) {
-			products.erase(product);
+			this->shopProducts.erase(product);
 			std::cout << "Продукт за ID " << productID << " був успішно видалений.\n";
 		}
 	}
 }
 
 // Переглянути всі замовлення на всі товари
-void Admin::showAllOrdersAllProducts(std::deque<Order>& orders)
+void Admin::showAllOrdersAllProducts()
 {
-	if (orders.empty()) {
+	if (this->shopOrders.empty()) {
 		std::cout << "Наразі немає поточних замовлень.\n";
 	} else {
 		std::cout << "Всі поточні замовлення\n";
-		for (auto& order : orders) {
+		for (auto& order : this->shopOrders) {
 			std::cout << "ID: " << order.getId() << "\nСписок продуктів:\n";
 			for (auto& product : order.getProducts())
 			{
@@ -319,14 +359,14 @@ void Admin::showAllOrdersAllProducts(std::deque<Order>& orders)
 }
 
 // Видалити обране замовлення
-void Admin::delOrderProduct(std::deque<Order>& orders, int orderID)
+void Admin::delOrderProduct(int orderID)
 {
-	if (orders.empty()) {
+	if (this->shopOrders.empty()) {
 		std::cout << "Наразі немає поточних замовлень.\n";
 	} else {
-		for (auto order = orders.begin(); order != orders.end(); order++) {
+		for (auto order = this->shopOrders.begin(); order != this->shopOrders.end(); order++) {
 			if (order->getId() == orderID) {
-				orders.erase(order);
+				this->shopOrders.erase(order);
 				std::cout << "Замовлення з ID " << orderID << " було успішно видалене.\n";
 			}
 		}
@@ -334,12 +374,12 @@ void Admin::delOrderProduct(std::deque<Order>& orders, int orderID)
 }
 
 // Видалити всі замовлення певного товару
-void Admin::delAllOrdersProduct(std::deque<Order>& orders, int productID)
+void Admin::delAllOrdersProduct(int productID)
 {
-	if (orders.empty()) {
+	if (this->shopOrders.empty()) {
 		std::cout << "Наразі немає поточних замовлень.\n";
 	} else {
-		for (auto order = orders.begin(); order != orders.end(); ) {
+		for (auto order = this->shopOrders.begin(); order != this->shopOrders.end(); ) {
 			for (auto product = order->getProducts().begin(); product != order->getProducts().end();) {
 				if (product->getId() == productID) {
 					product = order->getProducts().erase(product);
@@ -348,7 +388,7 @@ void Admin::delAllOrdersProduct(std::deque<Order>& orders, int productID)
 				}
 			}
 			if (order->getProducts().empty()) {
-				order = orders.erase(order);
+				order = this->shopOrders.erase(order);
 			} else {
 				++order;
 			}
@@ -357,12 +397,12 @@ void Admin::delAllOrdersProduct(std::deque<Order>& orders, int productID)
 }
 
 // Видалити абсолютно всі замовлення на всі товари
-void Admin::delAllOrdersAllProducts(std::deque<Order>& orders)
+void Admin::delAllOrdersAllProducts()
 {
-	if (orders.empty()) {
+	if (this->shopOrders.empty()) {
 		std::cout << "Наразі немає поточних замовлень.\n";
 	} else {
-		orders.clear();
+		this->shopOrders.clear();
 		std::cout << "Усі замовлення на усі продукти успішно видалені.\n";
 	}
 }
