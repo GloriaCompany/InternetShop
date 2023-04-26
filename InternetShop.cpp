@@ -2,10 +2,6 @@
 #include <io.h>
 #include <fcntl.h>
 
-#define RED "\033[0;31m"
-#define GRN "\033[0;32m"
-#define WHT "\033[0;37m"
-
 using namespace std;
 
 int main()
