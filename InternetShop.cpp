@@ -1,7 +1,7 @@
 ﻿#include <iostream>
 #include <io.h>
 #include <fcntl.h>
-
+#include "defines.h"
 using namespace std;
 
 int main()

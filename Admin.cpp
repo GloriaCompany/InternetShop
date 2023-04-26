@@ -1,10 +1,7 @@
 #include "Admin.h"
-#include "Customer.h"
-#include "Product.h"
-#include <deque>
-#include <array>
 #include <iostream>
 #include <limits>
+#include <array>
 
 // Масив символів, що повинні валідуватися
 const std::array<char, 25> invalidSymbols = { '!','@','.','/','[',']','(',')','$','%','^','&','*',':',';','"','`','<','>',',','-','+','№','?' };

@@ -1,8 +1,5 @@
 #pragma once
-#include <string>
-#include <deque>
 #include "Product.h"
-
 class User
 {
 private:
@@ -11,7 +8,6 @@ private:
 	std::string login;
 	std::string password;
 public:
-	User() {};
 	User(int _id, int _role, std::string _login, std::string _password);
 	virtual ~User();
 
@@ -25,8 +21,5 @@ public:
 	void setLogin(std::string login);
 	void setPassword(std::string password);
 
-	virtual void showAllProducts(std::deque<Product>& products);
-	virtual void showInfoProductByName(std::deque<Product>& products, std::string productName);
-	virtual void showInfoProductByArticle(std::deque<Product>& products, std::string article);
 	bool auth(std::string _login, std::string _password);
 };

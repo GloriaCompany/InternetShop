@@ -15,21 +15,6 @@ void User::setRole(int role) { this->role = role; }
 void User::setLogin(std::string login) { this->login = login; }
 void User::setPassword(std::string password) { this->password = password; }
 
-void User::showAllProducts(std::deque<Product>& products)
-{
-
-}
-
-void User::showInfoProductByName(std::deque<Product>& products, std::string productName)
-{
-
-}
-
-void User::showInfoProductByArticle(std::deque<Product>& products, std::string productName)
-{
-
-}
-
 bool User::auth(std::string _login, std::string _password)
 {
     

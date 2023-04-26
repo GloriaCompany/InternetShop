@@ -1,7 +1,5 @@
 #include "User.h"
 #include "Customer.h"
-#include "Product.h"
-#include "Order.h"
 #include <deque>
 
 class Admin : public User
@@ -23,7 +21,7 @@ public:
 	void delAllOrdersProduct(std::deque<Order>& orders, int productID);
 	void delAllOrdersAllProducts(std::deque<Order>& orders);
 
-	void showAllProducts(std::deque<Product>& products) override;
-	void showInfoProductByName(std::deque<Product>& products, std::string productName) override;
-	void showInfoProductByArticle(std::deque<Product>& products, std::string article) override;
+	void showAllProducts(std::deque<Product>& products);
+	void showInfoProductByName(std::deque<Product>& products, std::string productName);
+	void showInfoProductByArticle(std::deque<Product>& products, std::string article);
 };
