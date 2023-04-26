@@ -1,4 +1,6 @@
 #include "User.h"
+#include <limits>
+#include <array>
 
 User::User(int _id, int _role, std::string _login, std::string _password)
 	: id(_id), role(_role), login(_login), password(_password){}
@@ -14,6 +16,8 @@ void User::setId(int id) { this->id = id; }
 void User::setRole(int role) { this->role = role; }
 void User::setLogin(std::string login) { this->login = login; }
 void User::setPassword(std::string password) { this->password = password; }
+
+const std::array<char, 25> invalidSymbols = { '!','@','.','/','[',']','(',')','$','%','^','&','*',':',';','"','`','<','>',',','-','+','¹','?' };
 
 bool User::auth(std::string _login, std::string _password)
 {
