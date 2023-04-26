@@ -4,6 +4,9 @@
 Customer::Customer(int _id, int _role, std::string _login, std::string _password)
 	: User(_id, _role, _login, _password) {}
 
+std::deque<Order> Customer::getOrders() { return this->orders; }
+void Customer::setOrders(Order& order) { this->orders.push_back(order); }
+
 void Customer::showInfoProduct(std::deque<Product>& products, int id)
 {
 	for (auto& product : products)

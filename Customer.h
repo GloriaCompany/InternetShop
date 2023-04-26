@@ -10,6 +10,9 @@ private:
 public:
 	Customer(int _id, int _role, std::string _login, std::string _password);
 
+	std::deque<Order> getOrders();
+	void setOrders(Order& order);
+
 	void showInfoProduct(std::deque<Product>& products, int id);
 	void buyProduct(Order order);
 	void showAllOrders();
