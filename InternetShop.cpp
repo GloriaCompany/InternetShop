@@ -68,9 +68,6 @@ int main()
 				string loginAdmin = "admin";
 				string passwordAdmin = "adminadmin";
 
-				string login;
-				string password;
-
 				system("cls");
 				wcout << L"╭──────────────────────────────────╮\n";
 				wcout << L"│" << RED << L"           Вхід в систему         " << WHT << L"│\n";
@@ -95,9 +92,6 @@ int main()
 			else if (option == 2) {
 				string loginCustomer = "customer";
 				string passwordCustomer = "customercustomer";
-
-				string login;
-				string password;
 
 				system("cls");
 				wcout << L"╭──────────────────────────────────╮\n";
