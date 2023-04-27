@@ -20,3 +20,5 @@
 ???
 
 <h4>Enjoy!</h4>
+
+&copy; Created by <a href="https://github.com/GloriaCompany">Gloria Company</a> with Love.
