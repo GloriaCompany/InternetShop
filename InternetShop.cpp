@@ -51,7 +51,7 @@ int main()
 		}
 		case(2):
 		{
-			// Сделать оптимизацию ввода в меню 
+			// Меню авторизації
 			system("cls");
 			wcout << L"╭──────────────────────────────────╮\n";
 			wcout << L"│" << RED << L"           Вхід в систему         " << WHT << L"│\n";
@@ -64,8 +64,16 @@ int main()
 			wcout << WHT;
 			wcout	<< L"╰──────────────────────────────────╯\n";
 
-			// здесь проверка правильность логина и пароля
-			
+			// Авторизація адміна 
+			string loginAdmin = "admin";
+			string passwordAdmin = "adminadmin";
+
+			if (login == loginAdmin && password == passwordAdmin) {
+				wcout << GRN << L" Успішний вхід в систему!\n" << WHT;
+			}
+			else {
+				wcout << RED << L" Невірний логін або пароль!\n" << WHT;
+			}
 
 			return 0;
 		}
