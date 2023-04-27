@@ -7,11 +7,11 @@ using namespace std;
 int main()
 {
 	string login, password;
-    int option;
+	int option;
 	cin.exceptions(cin.failbit);
 
-    while (true)
-    {
+	while (true)
+	{
 		_setmode(_fileno(stdout), _O_WTEXT);
 		wcout
 			<< WHT
@@ -54,29 +54,70 @@ int main()
 			// Меню авторизації
 			system("cls");
 			wcout << L"╭──────────────────────────────────╮\n";
-			wcout << L"│" << RED << L"           Вхід в систему         " << WHT << L"│\n";
+			wcout << L"│" << RED << L"	 Вхід в систему " << WHT << L"	   │\n";
 			wcout << L"├──────────────────────────────────┤\n";
-			wcout << L"│" << GRN << L" Login:" ;
-			cin >> login;
-			wcout << WHT;
-			wcout << L"│" << GRN << L" Password:";
-			cin >> password;
-			wcout << WHT;
-			wcout	<< L"╰──────────────────────────────────╯\n";
+			wcout << L"│" << GRN << L" 1. Вхід як адміністратор" << WHT << L"	   │\n";
+			wcout << L"│" << GRN << L" 2. Вхід як клієнт" << WHT << L"		   │\n";
+			wcout << L"╰──────────────────────────────────╯\n";
+			int option;
+			wcout << L"Введіть номер опції: ";
+			cin >> option;
 
 			// Авторизація адміна 
-			string loginAdmin = "admin";
-			string passwordAdmin = "adminadmin";
+			if (option == 1) {
+				string loginAdmin = "admin";
+				string passwordAdmin = "adminadmin";
 
-			if (login == loginAdmin && password == passwordAdmin) {
-				wcout << GRN << L" Успішний вхід в систему!\n" << WHT;
-			}
-			else {
-				wcout << RED << L" Невірний логін або пароль!\n" << WHT;
+				string login;
+				string password;
+
+				system("cls");
+				wcout << L"╭──────────────────────────────────╮\n";
+				wcout << L"│" << RED << L"           Вхід в систему         " << WHT << L"│\n";
+				wcout << L"├──────────────────────────────────┤\n";
+				wcout << L"│" << GRN << L" Login:";
+				cin >> login;
+				wcout << WHT;
+				wcout << L"│" << GRN << L" Password:";
+				cin >> password;
+				wcout << WHT;
+				wcout << L"╰──────────────────────────────────╯\n";
+
+				if (login == loginAdmin && password == passwordAdmin) {
+					wcout << GRN << L" Успішний вхід в систему!\n" << WHT;
+				}
+				else {
+					wcout << RED << L" Невірний логін або пароль!\n" << WHT;
+				}
 			}
 
-			return 0;
-		}
+			// Авторизація клієнта
+			else if (option == 2) {
+				string loginCustomer = "customer";
+				string passwordCustomer = "customercustomer";
+
+				string login;
+				string password;
+
+				system("cls");
+				wcout << L"╭──────────────────────────────────╮\n";
+				wcout << L"│" << RED << L"           Вхід в систему         " << WHT << L"│\n";
+				wcout << L"├──────────────────────────────────┤\n";
+				wcout << L"│" << GRN << L" Login:";
+				cin >> login;
+				wcout << WHT;
+				wcout << L"│" << GRN << L" Password:";
+				cin >> password;
+				wcout << WHT;
+				wcout << L"╰──────────────────────────────────╯\n";
+
+				if (login == loginCustomer && password == passwordCustomer) {
+					wcout << GRN << L" Успішний вхід в систему!\n" << WHT;
+				}
+				else {
+					wcout << RED << L" Невірний логін або пароль!\n" << WHT;
+				}
+			}
 		case(3):
 		{
 			system("pause");
@@ -88,7 +129,9 @@ int main()
 			wcout << RED << L" Введіть коректні дані!\n";
 			break;
 		}
-    }
+		}
 
-    return 0;
+		
+	}
+	return 0;
 }
