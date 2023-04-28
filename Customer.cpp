@@ -7,9 +7,9 @@ Customer::Customer(int _id, int _role, std::string _login, std::string _password
 std::deque<Order> Customer::getOrders() { return this->orders; }
 void Customer::setOrders(Order& order) { this->orders.push_back(order); }
 
-void Customer::showInfoProduct(std::deque<Product>& products, int id)
+void Customer::showInfoProduct(int id)
 {
-	for (auto& product : products)
+	for (auto& product : shop.getProducts())
 	{
 		if (product.getId() == id)
 		{
@@ -49,24 +49,15 @@ void Customer::cancelOrder(int id)
 	}
 }
 
-void Customer::showAllProducts(std::deque<Product>& products)
+void Customer::showAllProducts()
 {
-	std::cout << "Список усіх продуктів у магазині\n";
-	for (auto& product : products) {
-		std::cout << "ID: " << product.getId()
-			<< "\nНазва продукту: " << product.getName()
-			<< "\nВартість продукту: " << product.getCost()
-			<< "\nАртикль: " << product.getArticle() << '\n';
+	if (shop.getProducts().empty()) {
+		std::cout << "Наразі у магазині немає продуктів.\n";
 	}
-}
-
-void Customer::showInfoProductByName(std::deque<Product>& products, std::string productName)
-{
-	for (auto& product : products) {
-		if (product.getName() == productName) {
-			std::cout << "Продукт з іменем " << productName << " успішно зайдено.\n"
-				<< "Інформація про знайдений продукт:\n"
-				<< "ID: " << product.getId()
+	else {
+		std::cout << "Список усіх продуктів у магазині\n";
+		for (auto& product : shop.getProducts()) {
+			std::cout << "ID: " << product.getId()
 				<< "\nНазва продукту: " << product.getName()
 				<< "\nВартість продукту: " << product.getCost()
 				<< "\nАртикль: " << product.getArticle() << '\n';
@@ -74,16 +65,40 @@ void Customer::showInfoProductByName(std::deque<Product>& products, std::string 
 	}
 }
 
-void Customer::showInfoProductByArticle(std::deque<Product>& products, std::string article)
+void Customer::showInfoProductByName(std::string productName)
 {
-	for (auto& product : products) {
-		if (product.getName() == article) {
-			std::cout << "Продукт з артиклем " << article << " успішно зайдено.\n"
-				<< "Інформація про знайдений продукт:\n"
-				<< "ID: " << product.getId()
-				<< "\nНазва продукту: " << product.getName()
-				<< "\nВартість продукту: " << product.getCost()
-				<< "\nАртикль: " << product.getArticle() << '\n';
+	if (shop.getProducts().empty()) {
+		std::cout << "Наразі у магазині немає продуктів.\n";
+	}
+	else {
+		for (auto& product : shop.getProducts()) {
+			if (product.getName() == productName) {
+				std::cout << "Продукт з ім'ям " << productName << " успішно зайдено.\n"
+					<< "Інформація про знайдений продукт:\n"
+					<< "ID: " << product.getId()
+					<< "\nНазва продукту: " << product.getName()
+					<< "\nВартість продукту: " << product.getCost()
+					<< "\nАртикль: " << product.getArticle() << '\n';
+			}
+		}
+	}
+}
+
+void Customer::showInfoProductByArticle(std::string article)
+{
+	if (shop.getProducts().empty()) {
+		std::cout << "Наразі у магазині немає продуктів.\n";
+	}
+	else {
+		for (auto& product : shop.getProducts()) {
+			if (product.getName() == article) {
+				std::cout << "Продукт з артиклем " << article << " успішно зайдено.\n"
+					<< "Інформація про знайдений продукт:\n"
+					<< "ID: " << product.getId()
+					<< "\nНазва продукту: " << product.getName()
+					<< "\nВартість продукту: " << product.getCost()
+					<< "\nАртикль: " << product.getArticle() << '\n';
+			}
 		}
 	}
 }

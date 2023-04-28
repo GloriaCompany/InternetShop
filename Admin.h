@@ -1,20 +1,18 @@
 #include "User.h"
 #include "Customer.h"
+#include "Shop.h"
 #include <deque>
 
 class Admin : public User
 {
 private:
-	std::deque<Customer> shopCustomers;
-	std::deque<Product> shopProducts;
-	std::deque<Order> shopOrders;
+	Shop shop;
+	std::deque<Customer> customers;
 public:
 	Admin(int _id, int _role, std::string _login, std::string _password);
 
-	// Отримання інформації з магазину
-	void setCustomersForAdmin(const std::deque<Customer>& customers);
-	void setProductsForAdmin(const std::deque<Product>& products);
-	void setOrdersForAdmin(const std::deque<Order>& orders);
+	std::deque<Customer> getCusomers();
+	void setCustomer(std::deque<Customer>& customers);
 
 	// Операції
 	void addCustomer(Customer& newCustomer);

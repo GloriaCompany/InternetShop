@@ -15,7 +15,7 @@ public:
 	bool getActive();
 	
 	void setId(int id);
-	void setProducts(Product& product);
+	void setProducts(std::deque<Product>& products);
 	void setActive(bool isActive);
 };
 

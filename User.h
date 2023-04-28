@@ -1,5 +1,6 @@
 #pragma once
 #include "Product.h"
+
 class User
 {
 private:
