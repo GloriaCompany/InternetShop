@@ -21,7 +21,6 @@ const std::array<char, 25> invalidSymbols = { '!','@','.','/','[',']','(',')','$
 
 bool User::auth(std::string _login, std::string _password)
 {
-    
     if (_login.empty() || _password.empty()) {
         return false;
     }

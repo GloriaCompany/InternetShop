@@ -8,11 +8,11 @@ const std::array<char, 25> invalidSymbols = { '!','@','.','/','[',']','(',')','$
 
 Admin::Admin(int _id, int _role, std::string _login, std::string _password) : User(_id, _role, _login, _password) {}
 
-std::deque<Customer> Admin::getCusomers() { return this->customers; }
-void Admin::setCustomer(std::deque<Customer>& customers) { this->customers = customers; }
+std::deque<Customer> Admin::getCustomers() { return this->customers; }
+void Admin::setCustomers(const std::deque<Customer>& customers) { this->customers = customers; }
 
 // Додати клієнта
-void Admin::addCustomer(Customer& newCustomer)
+void Admin::addCustomer(Customer newCustomer)
 {
 	bool isExists = false;
     for (auto& customer : customers) {
@@ -28,6 +28,7 @@ void Admin::addCustomer(Customer& newCustomer)
     }
     if (!isExists) {
 		customers.push_back(newCustomer);
+		std::cout << "Нового покупця успішно додано.\n";
     }
 }
 
@@ -136,12 +137,9 @@ void Admin::delCustomer(int customerID)
 {
 	if (customers.empty()) {
 		std::cout << "Наразі у магазині немає покупців.\n";
-	}
-	else
-	{
+	} else {
 		for (auto customer = customers.begin(); customer != customers.end(); ++customer) {
-			if (customer->getId() == customerID)
-			{
+			if (customer->getId() == customerID) {
 				customers.erase(customer);
 				std::cout << "Покупець з ID " << customerID << " був успішно видалений.\n";
 				return;
@@ -225,7 +223,7 @@ void Admin::showProductInfoById(int productID)
 }
 
 // Додати товар
-void Admin::addProduct(Product& newProduct)
+void Admin::addProduct(Product newProduct)
 {
 	bool isExists = false;
 	for (auto& product : shop.getProducts()) {
@@ -237,6 +235,7 @@ void Admin::addProduct(Product& newProduct)
 	}
 	if (!isExists) {
 		shop.getProducts().push_back(newProduct);
+		std::cout << "Новий продукт успішно додано.\n";
 	}
 }
 
@@ -245,7 +244,7 @@ void Admin::editProduct(int productID)
 {
 	int userInput = 0;
 	constexpr int NAME_MIN_LENGTH = 5, NAME_MAX_LENGTH = 20;
-	constexpr double MIN_COST = 1., MAX_COST = std::numeric_limits<double>::max();
+	constexpr double MIN_COST = 1., MAX_COST = 100000000;
 	constexpr int MENU_MIN_SELECTION = 1, MENU_MAX_SELECTION = 2;
 	double newCost = 0;
 	std::string newName;
@@ -305,15 +304,11 @@ void Admin::editProduct(int productID)
 // Видалити товар
 void Admin::delProduct(int productID)
 {
-	if (shop.getProducts().empty())
-	{
+	if (shop.getProducts().empty()) {
 		std::cout << "Наразі у магазині немає продуктів.\n";
-	}
-	else
-	{
+	} else {
 		for (auto product = shop.getProducts().begin(); product != shop.getProducts().end(); ++product) {
-			if (product->getId() == productID)
-			{
+			if (product->getId() == productID) {
 				shop.getProducts().erase(product);
 				std::cout << "Покупець з ID " << productID << " був успішно видалений.\n";
 				return;
@@ -326,24 +321,16 @@ void Admin::delProduct(int productID)
 // Переглянути всі замовлення на всі товари
 void Admin::showAllOrdersAllProducts()
 {
-	if (customers.empty())
-	{
+	if (customers.empty()) {
 		std::cout << "Наразі у магазині немає покупців.\n";
-	}
-	else
-	{
-		for (auto& customer : customers)
-		{
-			if (customer.getOrders().empty())
-			{
+	} else {
+		for (auto& customer : customers) {
+			if (customer.getOrders().empty()) {
 				std::cout << "Наразі немає поточних замовлень.\n";
-			}
-			else
-			{
+			} else {
 				for (auto& order : customer.getOrders()) {
 					std::cout << "ID: " << order.getId() << "\nСписок продуктів:\n";
-					for (auto& product : order.getProducts())
-					{
+					for (auto& product : order.getProducts()) {
 						std::cout << "ID: " << product.getId()
 							<< "\nІм'я продукту: " << product.getName()
 							<< "\nВартість: " << product.getCost()
@@ -352,8 +339,7 @@ void Admin::showAllOrdersAllProducts()
 					std::cout << "Загальна сума замовлення: " << order.getTotalAmount() << '\n';
 					if (order.getActive() == true) {
 						std::cout << "Статус замовлення: Активне.";
-					}
-					else if (order.getActive() == false) {
+					} else if (order.getActive() == false) {
 						std::cout << "Статус замовлення: Неактивне.";
 					}
 				}
@@ -365,23 +351,15 @@ void Admin::showAllOrdersAllProducts()
 // Видалити обране замовлення
 void Admin::delOrderProduct(int orderID)
 {
-	if (customers.empty())
-	{
+	if (customers.empty()) {
 		std::cout << "Наразі у магазині немає покупців.\n";
-	}
-	else
-	{
-		for (auto& customer : customers)
-		{
-			if (customer.getOrders().empty())
-			{
+	} else {
+		for (auto& customer : customers) {
+			if (customer.getOrders().empty()) {
 				std::cout << "Наразі немає поточних замовлень.\n";
-			}
-			else
-			{
+			} else {
 				for (auto order = customer.getOrders().begin(); order != customer.getOrders().end(); ++order) {
-					if (order->getId() == orderID)
-					{
+					if (order->getId() == orderID) {
 						customer.getOrders().erase(order);
 						std::cout << "Замовлення з ID " << orderID << " було успішно видалено.\n";
 						return;
@@ -395,34 +373,20 @@ void Admin::delOrderProduct(int orderID)
 // Видалити всі замовлення певного товару
 void Admin::delAllOrdersProduct(int productID)
 {
-	if (customers.empty())
-	{
+	if (customers.empty()) {
 		std::cout << "Наразі у магазині немає покупців.\n";
-	}
-	else
-	{
-		for (auto& customer : customers)
-		{
-			if (customer.getOrders().empty())
-			{
+	} else {
+		for (auto& customer : customers) {
+			if (customer.getOrders().empty()) {
 				std::cout << "Наразі немає поточних замовлень.\n";
-			}
-			else
-			{
-				for (auto& customer : customers)
-				{
-					if (customer.getOrders().empty())
-					{
+			} else {
+				for (auto& customer : customers) {
+					if (customer.getOrders().empty()) {
 						std::cout << "Наразі немає поточних замовлень.\n";
-					}
-					else
-					{
-						for (auto order = customer.getOrders().begin(); order != customer.getOrders().end(); ++order)
-						{
-							for (auto product = order->getProducts().begin(); product != order->getProducts().end(); ++product)
-							{
-								if (product->getId() == productID)
-								{
+					} else {
+						for (auto order = customer.getOrders().begin(); order != customer.getOrders().end(); ++order) {
+							for (auto product = order->getProducts().begin(); product != order->getProducts().end(); ++product) {
+								if (product->getId() == productID) {
 									customer.getOrders().erase(order);
 									std::cout << "Продукт з ID " << productID << " було успішно видалено.\n";
 									return;
@@ -439,20 +403,13 @@ void Admin::delAllOrdersProduct(int productID)
 // Видалити абсолютно всі замовлення на всі товари
 void Admin::delAllOrdersAllProducts()
 {
-	if (customers.empty())
-	{
+	if (customers.empty()) {
 		std::cout << "Наразі у магазині немає покупців.\n";
-	}
-	else
-	{
-		for (auto& customer : customers)
-		{
-			if (customer.getOrders().empty())
-			{
+	} else {
+		for (auto& customer : customers) {
+			if (customer.getOrders().empty()) {
 				std::cout << "Наразі немає поточних замовлень.\n";
-			}
-			else
-			{
+			} else {
 				customer.getOrders().clear();
 				std::cout << "Усі замовлення на усі продукти успішно видалені.\n";
 			}

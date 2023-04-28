@@ -8,3 +8,9 @@
 #define MAG "\033[0;35m" //Magenta
 #define CYN "\033[0;36m" //Cyan
 #define WHT "\033[0;37m" //White#pragma once
+
+#define ADMIN_CODE 1
+#define CUSTOMER_CODE 2
+#define ADMIN_ID 1
+#define ADMIN_LOGIN "admin"
+#define ADMIN_PASSWORD "adminadmin"
