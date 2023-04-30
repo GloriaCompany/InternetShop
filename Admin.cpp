@@ -317,7 +317,7 @@ void Admin::addProduct(Product newProduct)
 
 	if (newProduct.getCost() < MIN_COST || newProduct.getCost() > MAX_COST) 
 	{
-		std::wcout << RED << "Мінімальна вартість продукту - " << MIN_COST << " грн., максимальна вартість продукту - " << MAX_COST << " грн. Повторіть спробу, будь-ласка.\n";
+		std::wcout << RED << L"Мінімальна вартість продукту - " << MIN_COST << L" грн., максимальна вартість продукту - " << MAX_COST << L" грн. Повторіть спробу, будь-ласка.\n";
 	}
 	else 
 	{
@@ -412,7 +412,7 @@ void Admin::editProduct(int productID)
 
 				product.setCost(newCost);
 				std::wcout << GRN << L"Вартість продукту успішно змінено.\n"
-					<< WHT << "Нові дані продукту : \nID : " << product.getId()
+					<< WHT << L"Нові дані продукту : \nID : " << product.getId()
 					<< WHT << L"\nІм'я: " << product.getName()
 					<< WHT << L"\nВартість: " << product.getCost() << L" грн.\n";
 				break;
