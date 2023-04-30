@@ -1,26 +1,27 @@
 #pragma once
 #include "Product.h"
+#include "defines.h"
 
 class User
 {
 private:
 	int id;
 	int role;
-	std::string login;
-	std::string password;
+	std::wstring login;
+	std::wstring password;
 public:
-	User(int _id, int _role, std::string _login, std::string _password);
+	User(int _id, int _role, std::wstring _login, std::wstring _password);
 	virtual ~User();
 
 	int getId();
 	int getRole();
-	std::string getLogin();
-	std::string getPassword();
+	std::wstring getLogin();
+	std::wstring getPassword();
 
 	void setId(int id);
 	void setRole(int role);
-	void setLogin(std::string login);
-	void setPassword(std::string password);
+	void setLogin(std::wstring login);
+	void setPassword(std::wstring password);
 
-	bool auth(std::string _login, std::string _password);
+	bool auth(std::wstring _login, std::wstring _password);
 };

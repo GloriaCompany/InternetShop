@@ -10,7 +10,7 @@ private:
 	Shop shop;
 	std::deque<Order> orders;
 public:
-	Customer(int _id, int _role, std::string _login, std::string _password);
+	Customer(int _id, int _role, std::wstring _login, std::wstring _password);
 
 	std::deque<Order> getOrders();
 	void setOrders(Order& order);
@@ -21,6 +21,6 @@ public:
 	void cancelOrder(int id);
 
 	void showAllProducts();
-	void showInfoProductByName(std::string productName);
-	void showInfoProductByArticle(std::string article);
+	void showInfoProductByName(std::wstring productName);
+	void showInfoProductByArticle(std::wstring article);
 };

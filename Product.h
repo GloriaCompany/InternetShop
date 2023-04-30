@@ -6,20 +6,20 @@ class Product
 {
 private:
 	int id;
-	std::string name;
-	std::string article;
+	std::wstring name;
+	std::wstring article;
 	double cost;
 public:
-	Product(int _id, std::string _name, std::string _article, double _cost);
+	Product(int _id, std::wstring _name, std::wstring _article, double _cost);
 
 	int getId();
-	std::string getName();
-	std::string getArticle();
+	std::wstring getName();
+	std::wstring getArticle();
 	double getCost();
 
 	void setId(int id);
-	void setName(std::string name);
-	void setArticle(std::string article);
+	void setName(std::wstring name);
+	void setArticle(std::wstring article);
 	void setCost(double cost);
 };
 

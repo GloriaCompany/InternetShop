@@ -2,30 +2,30 @@
 #include <limits>
 #include <array>
 
-User::User(int _id, int _role, std::string _login, std::string _password)
+User::User(int _id, int _role, std::wstring _login, std::wstring _password)
 	: id(_id), role(_role), login(_login), password(_password){}
 
 User::~User() {}
 
 int User::getId() { return this->id; }
 int User::getRole() { return this->role; }
-std::string User::getLogin() { return this->login; }
-std::string User::getPassword() { return this->password; }
+std::wstring User::getLogin() { return this->login; }
+std::wstring User::getPassword() { return this->password; }
 
 void User::setId(int id) { this->id = id; }
 void User::setRole(int role) { this->role = role; }
-void User::setLogin(std::string login) { this->login = login; }
-void User::setPassword(std::string password) { this->password = password; }
+void User::setLogin(std::wstring login) { this->login = login; }
+void User::setPassword(std::wstring password) { this->password = password; }
 
-const std::array<char, 25> invalidSymbols = { '!','@','.','/','[',']','(',')','$','%','^','&','*',':',';','"','`','<','>',',','-','+','¹','?' };
+const std::array<wchar_t, 25> invalidSymbols = { '!','@','.','/','[',']','(',')','$','%','^','&','*',':',';','"','`','<','>',',','-','+','¹','?' };
 
-bool User::auth(std::string _login, std::string _password)
+bool User::auth(std::wstring _login, std::wstring _password)
 {
     if (_login.empty() || _password.empty()) {
         return false;
     }
 
-    if (_login.find(' ') != std::string::npos || _password.find(' ') != std::string::npos) {
+    if (_login.find(' ') != std::wstring::npos || _password.find(' ') != std::wstring::npos) {
         return false;
     }
 

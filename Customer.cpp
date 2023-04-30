@@ -1,7 +1,7 @@
 #include "Customer.h"
 #include <iostream>
 
-Customer::Customer(int _id, int _role, std::string _login, std::string _password)
+Customer::Customer(int _id, int _role, std::wstring _login, std::wstring _password)
 	: User(_id, _role, _login, _password) {}
 
 std::deque<Order> Customer::getOrders() { return this->orders; }
@@ -13,9 +13,9 @@ void Customer::showInfoProduct(int id)
 	{
 		if (product.getId() == id)
 		{
-			std::cout << "\nНазва продукту: " << product.getName()
-				<< "\nВартість продукту: " << product.getCost()
-				<< "\nАртикль: " << product.getArticle() << '\n';
+			std::wcout << L"\nНазва продукту: " << product.getName()
+				<< L"\nВартість продукту: " << product.getCost()
+				<< L"\nАртикль: " << product.getArticle() << '\n';
 		}
 	}
 }
@@ -31,9 +31,9 @@ void Customer::showAllOrders()
 	{
 		for (auto& product : order.getProducts())
 		{
-			std::cout << "\nНазва продукту: " << product.getName()
-				<< "\nВартість продукту: " << product.getCost()
-				<< "\nАртикль: " << product.getArticle() << '\n';
+			std::wcout << L"\nНазва продукту: " << product.getName()
+				<< L"\nВартість продукту: " << product.getCost()
+				<< L"\nАртикль: " << product.getArticle() << '\n';
 		}
 	}
 }
@@ -52,52 +52,52 @@ void Customer::cancelOrder(int id)
 void Customer::showAllProducts()
 {
 	if (shop.getProducts().empty()) {
-		std::cout << "Наразі у магазині немає продуктів.\n";
+		std::wcout << L"Наразі у магазині немає продуктів.\n";
 	}
 	else {
-		std::cout << "Список усіх продуктів у магазині\n";
+		std::wcout << L"Список усіх продуктів у магазині\n";
 		for (auto& product : shop.getProducts()) {
-			std::cout << "ID: " << product.getId()
-				<< "\nНазва продукту: " << product.getName()
-				<< "\nВартість продукту: " << product.getCost()
-				<< "\nАртикль: " << product.getArticle() << '\n';
+			std::wcout << L"ID: " << product.getId()
+				<< L"\nНазва продукту: " << product.getName()
+				<< L"\nВартість продукту: " << product.getCost()
+				<< L"\nАртикль: " << product.getArticle() << '\n';
 		}
 	}
 }
 
-void Customer::showInfoProductByName(std::string productName)
+void Customer::showInfoProductByName(std::wstring productName)
 {
 	if (shop.getProducts().empty()) {
-		std::cout << "Наразі у магазині немає продуктів.\n";
+		std::wcout << L"Наразі у магазині немає продуктів.\n";
 	}
 	else {
 		for (auto& product : shop.getProducts()) {
 			if (product.getName() == productName) {
-				std::cout << "Продукт з ім'ям " << productName << " успішно зайдено.\n"
-					<< "Інформація про знайдений продукт:\n"
-					<< "ID: " << product.getId()
-					<< "\nНазва продукту: " << product.getName()
-					<< "\nВартість продукту: " << product.getCost()
-					<< "\nАртикль: " << product.getArticle() << '\n';
+				std::wcout << L"Продукт з ім'ям " << productName << L" успішно зайдено.\n"
+					<< L"Інформація про знайдений продукт:\n"
+					<< L"ID: " << product.getId()
+					<< L"\nНазва продукту: " << product.getName()
+					<< L"\nВартість продукту: " << product.getCost()
+					<< L"\nАртикль: " << product.getArticle() << '\n';
 			}
 		}
 	}
 }
 
-void Customer::showInfoProductByArticle(std::string article)
+void Customer::showInfoProductByArticle(std::wstring article)
 {
 	if (shop.getProducts().empty()) {
-		std::cout << "Наразі у магазині немає продуктів.\n";
+		std::wcout << L"Наразі у магазині немає продуктів.\n";
 	}
 	else {
 		for (auto& product : shop.getProducts()) {
 			if (product.getName() == article) {
-				std::cout << "Продукт з артиклем " << article << " успішно зайдено.\n"
-					<< "Інформація про знайдений продукт:\n"
-					<< "ID: " << product.getId()
-					<< "\nНазва продукту: " << product.getName()
-					<< "\nВартість продукту: " << product.getCost()
-					<< "\nАртикль: " << product.getArticle() << '\n';
+				std::wcout << L"Продукт з артиклем " << article << L" успішно зайдено.\n"
+					<< L"Інформація про знайдений продукт:\n"
+					<< L"ID: " << product.getId()
+					<< L"\nНазва продукту: " << product.getName()
+					<< L"\nВартість продукту: " << product.getCost()
+					<< L"\nАртикль: " << product.getArticle() << '\n';
 			}
 		}
 	}

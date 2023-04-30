@@ -1,245 +1,261 @@
-#include "Admin.h"
+п»ї#include "Admin.h"
 #include <iostream>
 #include <limits>
 #include <array>
 
-// Масив символів, що повинні валідуватися
-const std::array<char, 25> invalidSymbols = { '!','@','.','/','[',']','(',')','$','%','^','&','*',':',';','"','`','<','>',',','-','+','№','?' };
+// РњР°СЃРёРІ СЃРёРјРІРѕР»С–РІ, С‰Рѕ РїРѕРІРёРЅРЅС– РІР°Р»С–РґСѓРІР°С‚РёСЃСЏ
+const std::array<wchar_t, 25> invalidSymbols = { '!','@','.','/','[',']','(',')','$','%','^','&','*',':',';','"','`','<','>',',','-','+','в„–','?' };
 
-Admin::Admin(int _id, int _role, std::string _login, std::string _password) : User(_id, _role, _login, _password) {}
+Admin::Admin(int _id, int _role, std::wstring _login, std::wstring _password) : User(_id, _role, _login, _password) {}
 
 std::deque<Customer> Admin::getCustomers() { return this->customers; }
 void Admin::setCustomers(const std::deque<Customer>& customers) { this->customers = customers; }
 
-// Додати клієнта
+// Р”РѕРґР°С‚Рё РєР»С–С”РЅС‚Р°
 void Admin::addCustomer(Customer newCustomer)
 {
 	bool isExists = false;
     for (auto& customer : customers) {
         if (newCustomer.getId() == customer.getId()) {
-			std::cout << "Покупець з таким ID вже існує. Повторіть спробу, будь-ласка.\n";
+			std::wcout << RED <<L"РџРѕРєСѓРїРµС†СЊ Р· С‚Р°РєРёРј ID РІР¶Рµ С–СЃРЅСѓС”. РџРѕРІС‚РѕСЂС–С‚СЊ СЃРїСЂРѕР±Сѓ, Р±СѓРґСЊ-Р»Р°СЃРєР°.\n" << WHT;
 			isExists = true;
             break;
         } else if (newCustomer.getLogin() == customer.getLogin()) {
-			std::cout << "Покупець з таким логіном вже існує. Повторіть спробу, будь-ласка.\n";
+			std::wcout << RED << L"РџРѕРєСѓРїРµС†СЊ Р· С‚Р°РєРёРј Р»РѕРіС–РЅРѕРј РІР¶Рµ С–СЃРЅСѓС”. РџРѕРІС‚РѕСЂС–С‚СЊ СЃРїСЂРѕР±Сѓ, Р±СѓРґСЊ-Р»Р°СЃРєР°.\n" << WHT;
 			isExists = true;
 			break;
 		}
     }
     if (!isExists) {
 		customers.push_back(newCustomer);
-		std::cout << "Нового покупця успішно додано.\n";
+		std::wcout << GRN << L"РќРѕРІРѕРіРѕ РїРѕРєСѓРїС†СЏ СѓСЃРїС–С€РЅРѕ РґРѕРґР°РЅРѕ.\n";
     }
 }
 
-// Редагувати інформацію про клієнта
+// Р РµРґР°РіСѓРІР°С‚Рё С–РЅС„РѕСЂРјР°С†С–СЋ РїСЂРѕ РєР»С–С”РЅС‚Р°
 void Admin::editCustomer(int customerID)
 {
 	int userInput = 0;
-	constexpr int USER_CODE = 1, ADMIN_CODE = 2;
+	constexpr int USER_CODE = 1;
 	constexpr int MENU_MIN_SELECTION = 1, MENU_MAX_SELECTION = 2;
 	constexpr int LOGIN_MIN_LENGTH = 5, LOGIN_MAX_LENGTH = 15;
 	constexpr int PASSWORD_MIN_LENGTH = 8, PASSWORD_MAX_LENGTH = 15;
-	std::string newLogin, newPassword;
+	std::wstring newLogin, newPassword;
 
 	for (auto& customer : customers) {
 		if (customer.getId() == customerID) {
-			do {
-				std::cout << "Оберіть параметр для зміни:\n1. Логін покупця.\n2. Пароль покупця.\n3. До попереднього меню.\nВаш вибір: ";
-				std::cin >> userInput;
-				if (userInput < MENU_MIN_SELECTION || userInput > MENU_MAX_SELECTION) {
-					std::cout << "Некоректний вибір. Повторіть спробу, будь-ласка.\n";
+			while(true) 
+			{
+				std::wcout << WHT
+					<< L"в•­в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв•®\n"
+					<< L"в”‚" << RED << L"   Р—РјС–РЅР° РїР°СЂР°РјРµС‚СЂС–РІ РєРѕСЂРёСЃС‚СѓРІР°С‡Р°   " << WHT << L"в”‚\n"
+					<< L"в”њв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”¤\n"
+					<< L"в”‚" << CYN << L" 1. " << GRN << L"Р›РѕРіС–РЅ РїРѕРєСѓРїС†СЏ.		   " << WHT << L"в”‚\n"
+					<< L"в”‚" << CYN << L" 2. " << GRN << L"РџР°СЂРѕР»СЊ РїРѕРєСѓРїС†СЏ.		   " << WHT << L"в”‚\n"
+					<< L"в”‚" << CYN << L" 3. " << GRN << L"Р”Рѕ РїРѕРїРµСЂРµРґРЅСЊРѕРіРѕ РјРµРЅСЋ.	   " << WHT << L"в”‚\n"
+					<< L"в•°в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв•Ї\n"
+					<< L" Р’Р°С€ РІРёР±С–СЂ : " << CYN;
+				try
+				{
+					std::wcin >> userInput;
 				}
-			} while (userInput < MENU_MIN_SELECTION || userInput > MENU_MAX_SELECTION);
-
-			switch (userInput) {
-			case 1:
-				while (true) {
-					std::cout << "Введіть новий логін для покупця " << customers.at(customerID).getLogin() << ": ";
-					std::cin >> newLogin;
-					if (newLogin.find(' ') != std::string::npos) {
-						std::cout << "Логін містить некоректні символи. Повторіть спробу, будь-ласка.\n";
-					}
-					else if (newLogin.find_first_of(invalidSymbols.data(), 0, invalidSymbols.size()) != std::string::npos) {
-						std::cout << "Логін містить некоректні символи. Повторіть спробу, будь-ласка.\n";
-					}
-					else if (newLogin.size() < LOGIN_MIN_LENGTH || newLogin.size() > LOGIN_MAX_LENGTH) {
-						std::cout << "Мінімальна довжина логіну - " << LOGIN_MIN_LENGTH << " символів, максимальна довжина логіну - " << LOGIN_MAX_LENGTH << " символів. Повторіть спробу, будь-ласка.\n";
-					}
-					else break;
+				catch (std::istream::failure e) {
+					system("cls");
+					std::wcout << RED << L" Р’РІРµРґС–С‚СЊ РєРѕСЂРµРєС‚РЅС– РґР°РЅС–.\n";
+					std::wcin.clear();
+					std::wcin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+					continue;
 				}
-				customers.at(customerID).setLogin(newLogin);
-				std::cout << "Логін успішно змінено. Нові дані користувача:\nID: " << customers.at(customerID).getId()
-					<< "\nЛогін: " << customers.at(customerID).getLogin()
-					<< "\nПароль : " << customers.at(customerID).getPassword()
-					<< "\nКод ролі : " << customers.at(customerID).getRole();
-				break;
-
-			case 2:
-				while (true) {
-					std::cout << "Введіть новий пароль для покупця " << customers.at(customerID).getLogin() << ": ";
-					std::cin >> newPassword;
-					if (newLogin.find(' ') != std::string::npos) {
-						std::cout << "Пароль містить некоректні символи. Повторіть спробу, будь-ласка.\n";
-					}
-					else if (newPassword.find_first_of(invalidSymbols.data(), 0, invalidSymbols.size()) != std::string::npos) {
-						std::cout << "Пароль містить некоректні символи. Повторіть спробу, будь-ласка.\n";
-					}
-					else if (newPassword.size() < PASSWORD_MIN_LENGTH || newPassword.size() > PASSWORD_MAX_LENGTH) {
-						std::cout << "Мінімальна довжина паролю - " << PASSWORD_MIN_LENGTH << " символів, максимальна довжина паролю - " << PASSWORD_MAX_LENGTH << " символів. Повторіть спробу, будь-ласка.\n";
-					}
-					else break;
-				}
-				customers.at(customerID).setPassword(newPassword);
-				std::cout << "Пароль успішно змінено. Нові дані користувача:\nID: " << customers.at(customerID).getId()
-					<< "\nЛогін: " << customers.at(customerID).getLogin()
-					<< "\nПароль : " << customers.at(customerID).getPassword()
-					<< "\nКод ролі : " << customers.at(customerID).getRole();
-				break;
-
-			case 3:
-				userInput = 0;
-				do {
-					std::cout << "Оберіть нову роль користувача у системі:\n1. Користувач.\n2. Адміністратор.\nВаш вибір: ";
-					std::cin >> userInput;
-					if (userInput < USER_CODE || userInput > ADMIN_CODE) {
-						std::cout << "Некоректний вибір. Повторіть спробу, будь-ласка.\n";
-					}
-				} while (userInput < USER_CODE || userInput > ADMIN_CODE);
 
 				switch (userInput) {
 				case 1:
-					customers.at(customerID).setRole(USER_CODE);
-					std::cout << "Роль користувача успішно змінено.\n";
+					while (true) {
+						std::wcout << L"Р’РІРµРґС–С‚СЊ РЅРѕРІРёР№ Р»РѕРіС–РЅ РґР»СЏ РїРѕРєСѓРїС†СЏ " << customers.at(customerID).getLogin() << L": ";
+						std::wcin >> newLogin;
+						if (newLogin.find(' ') != std::wstring::npos) {
+							std::wcout << L"Р›РѕРіС–РЅ РјС–СЃС‚РёС‚СЊ РЅРµРєРѕСЂРµРєС‚РЅС– СЃРёРјРІРѕР»Рё. РџРѕРІС‚РѕСЂС–С‚СЊ СЃРїСЂРѕР±Сѓ, Р±СѓРґСЊ-Р»Р°СЃРєР°.\n"; continue;
+						}
+						else if (newLogin.find_first_of(invalidSymbols.data(), 0, invalidSymbols.size()) != std::wstring::npos) {
+							std::wcout << L"Р›РѕРіС–РЅ РјС–СЃС‚РёС‚СЊ РЅРµРєРѕСЂРµРєС‚РЅС– СЃРёРјРІРѕР»Рё. РџРѕРІС‚РѕСЂС–С‚СЊ СЃРїСЂРѕР±Сѓ, Р±СѓРґСЊ-Р»Р°СЃРєР°.\n"; continue;
+						}
+						else if (newLogin.size() < LOGIN_MIN_LENGTH || newLogin.size() > LOGIN_MAX_LENGTH) {
+							std::wcout << L"РњС–РЅС–РјР°Р»СЊРЅР° РґРѕРІР¶РёРЅР° Р»РѕРіС–РЅСѓ - " << LOGIN_MIN_LENGTH << L" СЃРёРјРІРѕР»С–РІ, РјР°РєСЃРёРјР°Р»СЊРЅР° РґРѕРІР¶РёРЅР° Р»РѕРіС–РЅСѓ - " << LOGIN_MAX_LENGTH << L" СЃРёРјРІРѕР»С–РІ. РџРѕРІС‚РѕСЂС–С‚СЊ СЃРїСЂРѕР±Сѓ, Р±СѓРґСЊ-Р»Р°СЃРєР°.\n"; continue;
+						}
+						else break;
+					}
+					customers.at(customerID).setLogin(newLogin);
+					std::wcout << L"Р›РѕРіС–РЅ СѓСЃРїС–С€РЅРѕ Р·РјС–РЅРµРЅРѕ. РќРѕРІС– РґР°РЅС– РєРѕСЂРёСЃС‚СѓРІР°С‡Р°:\nID: " << customers.at(customerID).getId()
+						<< L"\nР›РѕРіС–РЅ: " << customers.at(customerID).getLogin()
+						<< L"\nРџР°СЂРѕР»СЊ : " << customers.at(customerID).getPassword()
+						<< L"\nРљРѕРґ СЂРѕР»С– : " << customers.at(customerID).getRole();
 					break;
 
-				case 2: 
-					customers.at(customerID).setRole(ADMIN_CODE);
-					std::cout << "Роль користувача успішно змінено.\n";
+				case 2:
+					while (true) {
+						std::wcout << L"Р’РІРµРґС–С‚СЊ РЅРѕРІРёР№ РїР°СЂРѕР»СЊ РґР»СЏ РїРѕРєСѓРїС†СЏ " << customers.at(customerID).getLogin() << L": ";
+						std::wcin >> newPassword;
+						if (newLogin.find(' ') != std::wstring::npos) {
+							std::wcout << L"РџР°СЂРѕР»СЊ РјС–СЃС‚РёС‚СЊ РЅРµРєРѕСЂРµРєС‚РЅС– СЃРёРјРІРѕР»Рё. РџРѕРІС‚РѕСЂС–С‚СЊ СЃРїСЂРѕР±Сѓ, Р±СѓРґСЊ-Р»Р°СЃРєР°.\n";
+						}
+						else if (newPassword.find_first_of(invalidSymbols.data(), 0, invalidSymbols.size()) != std::wstring::npos) {
+							std::wcout << L"РџР°СЂРѕР»СЊ РјС–СЃС‚РёС‚СЊ РЅРµРєРѕСЂРµРєС‚РЅС– СЃРёРјРІРѕР»Рё. РџРѕРІС‚РѕСЂС–С‚СЊ СЃРїСЂРѕР±Сѓ, Р±СѓРґСЊ-Р»Р°СЃРєР°.\n";
+						}
+						else if (newPassword.size() < PASSWORD_MIN_LENGTH || newPassword.size() > PASSWORD_MAX_LENGTH) {
+							std::wcout << L"РњС–РЅС–РјР°Р»СЊРЅР° РґРѕРІР¶РёРЅР° РїР°СЂРѕР»СЋ - " << PASSWORD_MIN_LENGTH << L" СЃРёРјРІРѕР»С–РІ, РјР°РєСЃРёРјР°Р»СЊРЅР° РґРѕРІР¶РёРЅР° РїР°СЂРѕР»СЋ - " << PASSWORD_MAX_LENGTH << L" СЃРёРјРІРѕР»С–РІ. РџРѕРІС‚РѕСЂС–С‚СЊ СЃРїСЂРѕР±Сѓ, Р±СѓРґСЊ-Р»Р°СЃРєР°.\n";
+						}
+						else break;
+					}
+					customers.at(customerID).setPassword(newPassword);
+					std::wcout << L"РџР°СЂРѕР»СЊ СѓСЃРїС–С€РЅРѕ Р·РјС–РЅРµРЅРѕ. РќРѕРІС– РґР°РЅС– РєРѕСЂРёСЃС‚СѓРІР°С‡Р°:\nID: " << customers.at(customerID).getId()
+						<< L"\nР›РѕРіС–РЅ: " << customers.at(customerID).getLogin()
+						<< L"\nРџР°СЂРѕР»СЊ : " << customers.at(customerID).getPassword()
+						<< L"\nРљРѕРґ СЂРѕР»С– : " << customers.at(customerID).getRole();
 					break;
 
-				default: 
-					std::cout << "Уп-с! Сталася помилка. Повторіть спробу, будь-ласка.\n";
+				case 3:
+					userInput = 0;
+					do {
+						std::wcout << L"РћР±РµСЂС–С‚СЊ РЅРѕРІСѓ СЂРѕР»СЊ РєРѕСЂРёСЃС‚СѓРІР°С‡Р° Сѓ СЃРёСЃС‚РµРјС–:\n1. РљРѕСЂРёСЃС‚СѓРІР°С‡.\n2. РђРґРјС–РЅС–СЃС‚СЂР°С‚РѕСЂ.\nР’Р°С€ РІРёР±С–СЂ: ";
+						std::wcin >> userInput;
+						if (userInput < USER_CODE || userInput > ADMIN_CODE) {
+							std::wcout << L"РќРµРєРѕСЂРµРєС‚РЅРёР№ РІРёР±С–СЂ. РџРѕРІС‚РѕСЂС–С‚СЊ СЃРїСЂРѕР±Сѓ, Р±СѓРґСЊ-Р»Р°СЃРєР°.\n";
+						}
+					} while (userInput < USER_CODE || userInput > ADMIN_CODE);
+
+					switch (userInput) {
+					case 1:
+						customers.at(customerID).setRole(USER_CODE);
+						std::wcout << L"Р РѕР»СЊ РєРѕСЂРёСЃС‚СѓРІР°С‡Р° СѓСЃРїС–С€РЅРѕ Р·РјС–РЅРµРЅРѕ.\n";
+						break;
+
+					case 2:
+						customers.at(customerID).setRole(ADMIN_CODE);
+						std::wcout << L"Р РѕР»СЊ РєРѕСЂРёСЃС‚СѓРІР°С‡Р° СѓСЃРїС–С€РЅРѕ Р·РјС–РЅРµРЅРѕ.\n";
+						break;
+
+					default:
+						std::wcout << L"РЈРї-СЃ! РЎС‚Р°Р»Р°СЃСЏ РїРѕРјРёР»РєР°. РџРѕРІС‚РѕСЂС–С‚СЊ СЃРїСЂРѕР±Сѓ, Р±СѓРґСЊ-Р»Р°СЃРєР°.\n";
+						break;
+					}
+					break;
+
+				default:
+					std::wcout << L"РЈРї-СЃ! РЎС‚Р°Р»Р°СЃСЏ РїРѕРјРёР»РєР°. РџРѕРІС‚РѕСЂС–С‚СЊ СЃРїСЂРѕР±Сѓ, Р±СѓРґСЊ-Р»Р°СЃРєР°.\n";
 					break;
 				}
-				break;
-
-			default:
-				std::cout << "Уп-с! Сталася помилка. Повторіть спробу, будь-ласка.\n";
-				break;
 			}
 		}
 	}
 }
 
-// Видалити клієнта
+// Р’РёРґР°Р»РёС‚Рё РєР»С–С”РЅС‚Р°
 void Admin::delCustomer(int customerID)
 {
 	if (customers.empty()) {
-		std::cout << "Наразі у магазині немає покупців.\n";
+		std::wcout << L"РќР°СЂР°Р·С– Сѓ РјР°РіР°Р·РёРЅС– РЅРµРјР°С” РїРѕРєСѓРїС†С–РІ.\n";
 	} else {
 		for (auto customer = customers.begin(); customer != customers.end(); ++customer) {
 			if (customer->getId() == customerID) {
 				customers.erase(customer);
-				std::cout << "Покупець з ID " << customerID << " був успішно видалений.\n";
+				std::wcout << L"РџРѕРєСѓРїРµС†СЊ Р· ID " << customerID << L" Р±СѓРІ СѓСЃРїС–С€РЅРѕ РІРёРґР°Р»РµРЅРёР№.\n";
 				return;
 			}
 		}
-		std::cout << "Покупця з ID " << customerID << " не знайдено.\n";
+		std::wcout << L"РџРѕРєСѓРїС†СЏ Р· ID " << customerID << L" РЅРµ Р·РЅР°Р№РґРµРЅРѕ.\n";
 	}
 }
 
-// Переглянути всі товари
+// РџРµСЂРµРіР»СЏРЅСѓС‚Рё РІСЃС– С‚РѕРІР°СЂРё
 void Admin::showAllProducts()
 {
 	if (shop.getProducts().empty()) {
-		std::cout << "Наразі у магазині немає продуктів.\n";
+		std::wcout << L"РќР°СЂР°Р·С– Сѓ РјР°РіР°Р·РёРЅС– РЅРµРјР°С” РїСЂРѕРґСѓРєС‚С–РІ.\n";
 	} else {
-		std::cout << "Список усіх продуктів у магазині\n";
+		std::wcout << L"РЎРїРёСЃРѕРє СѓСЃС–С… РїСЂРѕРґСѓРєС‚С–РІ Сѓ РјР°РіР°Р·РёРЅС–\n";
 		for (auto& product : shop.getProducts()) {
-			std::cout << "ID: " << product.getId()
-				<< "\nНазва продукту: " << product.getName()
-				<< "\nВартість продукту: " << product.getCost()
-				<< "\nАртикль: " << product.getArticle() << '\n';
+			std::wcout << L"ID: " << product.getId()
+				<< L"\nРќР°Р·РІР° РїСЂРѕРґСѓРєС‚Сѓ: " << product.getName()
+				<< L"\nР’Р°СЂС‚С–СЃС‚СЊ РїСЂРѕРґСѓРєС‚Сѓ: " << product.getCost()
+				<< L"\nРђСЂС‚РёРєР»СЊ: " << product.getArticle() << '\n';
 		}
 	}
 }
 
-// Знайти товар за назвою
-void Admin::showInfoProductByName(std::string productName)
+// Р—РЅР°Р№С‚Рё С‚РѕРІР°СЂ Р·Р° РЅР°Р·РІРѕСЋ
+void Admin::showInfoProductByName(std::wstring productName)
 {
 	if (shop.getProducts().empty()) {
-		std::cout << "Наразі у магазині немає продуктів.\n";
+		std::wcout << L"РќР°СЂР°Р·С– Сѓ РјР°РіР°Р·РёРЅС– РЅРµРјР°С” РїСЂРѕРґСѓРєС‚С–РІ.\n";
 	} else {
 		for (auto& product : shop.getProducts()) {
 			if (product.getName() == productName) {
-				std::cout << "Продукт з іменем " << productName << " успішно зайдено.\n"
-					<< "Інформація про знайдений продукт:\n"
-					<< "ID: " << product.getId()
-					<< "\nНазва продукту: " << product.getName()
-					<< "\nВартість продукту: " << product.getCost()
-					<< "\nАртикль: " << product.getArticle() << '\n';
+				std::wcout << L"РџСЂРѕРґСѓРєС‚ Р· С–РјРµРЅРµРј " << productName << L" СѓСЃРїС–С€РЅРѕ Р·Р°Р№РґРµРЅРѕ.\n"
+					<< L"Р†РЅС„РѕСЂРјР°С†С–СЏ РїСЂРѕ Р·РЅР°Р№РґРµРЅРёР№ РїСЂРѕРґСѓРєС‚:\n"
+					<< L"ID: " << product.getId()
+					<< L"\nРќР°Р·РІР° РїСЂРѕРґСѓРєС‚Сѓ: " << product.getName()
+					<< L"\nР’Р°СЂС‚С–СЃС‚СЊ РїСЂРѕРґСѓРєС‚Сѓ: " << product.getCost()
+					<< L"\nРђСЂС‚РёРєР»СЊ: " << product.getArticle() << '\n';
 			}
 		}
 	}
 }
 
-// Знайти товар за артиклем
-void Admin::showInfoProductByArticle(std::string article)
+// Р—РЅР°Р№С‚Рё С‚РѕРІР°СЂ Р·Р° Р°СЂС‚РёРєР»РµРј
+void Admin::showInfoProductByArticle(std::wstring article)
 {
 	if (shop.getProducts().empty()) {
-		std::cout << "Наразі у магазині немає продуктів.\n";
+		std::wcout << L"РќР°СЂР°Р·С– Сѓ РјР°РіР°Р·РёРЅС– РЅРµРјР°С” РїСЂРѕРґСѓРєС‚С–РІ.\n";
 	} else {
 		for (auto& product : shop.getProducts()) {
 			if (product.getName() == article) {
-				std::cout << "Продукт з артиклем " << article << " успішно зайдено.\n"
-					<< "Інформація про знайдений продукт:\n"
-					<< "ID: " << product.getId()
-					<< "\nНазва продукту: " << product.getName()
-					<< "\nВартість продукту: " << product.getCost()
-					<< "\nАртикль: " << product.getArticle() << '\n';
+				std::wcout << L"РџСЂРѕРґСѓРєС‚ Р· Р°СЂС‚РёРєР»РµРј " << article << L" СѓСЃРїС–С€РЅРѕ Р·Р°Р№РґРµРЅРѕ.\n"
+					<< L"Р†РЅС„РѕСЂРјР°С†С–СЏ РїСЂРѕ Р·РЅР°Р№РґРµРЅРёР№ РїСЂРѕРґСѓРєС‚:\n"
+					<< L"ID: " << product.getId()
+					<< L"\nРќР°Р·РІР° РїСЂРѕРґСѓРєС‚Сѓ: " << product.getName()
+					<< L"\nР’Р°СЂС‚С–СЃС‚СЊ РїСЂРѕРґСѓРєС‚Сѓ: " << product.getCost()
+					<< L"\nРђСЂС‚РёРєР»СЊ: " << product.getArticle() << '\n';
 			}
 		}
 	}
 }
 
-// Відкрити інформацію про товар
+// Р’С–РґРєСЂРёС‚Рё С–РЅС„РѕСЂРјР°С†С–СЋ РїСЂРѕ С‚РѕРІР°СЂ
 void Admin::showProductInfoById(int productID)
 {
 	if (shop.getProducts().empty()) {
-		std::cout << "Наразі у магазині немає продуктів.\n";
+		std::wcout << L"РќР°СЂР°Р·С– Сѓ РјР°РіР°Р·РёРЅС– РЅРµРјР°С” РїСЂРѕРґСѓРєС‚С–РІ.\n";
 	} else {
 		for (auto& product : shop.getProducts()) {
 			if (product.getId() == productID) {
-				std::cout << "Продукт з ID " << productID << " успішно зайдено.\n"
-					<< "Інформація про знайдений продукт:\n"
-					<< "ID: " << product.getId()
-					<< "\nНазва продукту: " << product.getName()
-					<< "\nВартість продукту: " << product.getCost()
-					<< "\nАртикль: " << product.getArticle() << '\n';
+				std::wcout << L"РџСЂРѕРґСѓРєС‚ Р· ID " << productID << L" СѓСЃРїС–С€РЅРѕ Р·Р°Р№РґРµРЅРѕ.\n"
+					<< L"Р†РЅС„РѕСЂРјР°С†С–СЏ РїСЂРѕ Р·РЅР°Р№РґРµРЅРёР№ РїСЂРѕРґСѓРєС‚:\n"
+					<< L"ID: " << product.getId()
+					<< L"\nРќР°Р·РІР° РїСЂРѕРґСѓРєС‚Сѓ: " << product.getName()
+					<< L"\nР’Р°СЂС‚С–СЃС‚СЊ РїСЂРѕРґСѓРєС‚Сѓ: " << product.getCost()
+					<< L"\nРђСЂС‚РёРєР»СЊ: " << product.getArticle() << '\n';
 			}
 		}
 	}
 }
 
-// Додати товар
+// Р”РѕРґР°С‚Рё С‚РѕРІР°СЂ
 void Admin::addProduct(Product newProduct)
 {
 	bool isExists = false;
 	for (auto& product : shop.getProducts()) {
 		if (newProduct.getId() == product.getId()) {
-			std::cout << "Продукт з таким ID вже існує. Повторіть спробу, будь-ласка.\n";
+			std::wcout << L"РџСЂРѕРґСѓРєС‚ Р· С‚Р°РєРёРј ID РІР¶Рµ С–СЃРЅСѓС”. РџРѕРІС‚РѕСЂС–С‚СЊ СЃРїСЂРѕР±Сѓ, Р±СѓРґСЊ-Р»Р°СЃРєР°.\n";
 			isExists = true;
 			break;
 		}
 	}
 	if (!isExists) {
 		shop.getProducts().push_back(newProduct);
-		std::cout << "Новий продукт успішно додано.\n";
+		std::wcout << L"РќРѕРІРёР№ РїСЂРѕРґСѓРєС‚ СѓСЃРїС–С€РЅРѕ РґРѕРґР°РЅРѕ.\n";
 	}
 }
 
-// Редагувати інформацію про товар
+// Р РµРґР°РіСѓРІР°С‚Рё С–РЅС„РѕСЂРјР°С†С–СЋ РїСЂРѕ С‚РѕРІР°СЂ
 void Admin::editProduct(int productID)
 {
 	int userInput = 0;
@@ -247,100 +263,100 @@ void Admin::editProduct(int productID)
 	constexpr double MIN_COST = 1., MAX_COST = 100000000;
 	constexpr int MENU_MIN_SELECTION = 1, MENU_MAX_SELECTION = 2;
 	double newCost = 0;
-	std::string newName;
+	std::wstring newName;
 
 	for (auto& product : shop.getProducts()) {
 		if (product.getId() == productID) {
 			do {
-				std::cout << "Оберіть параметр для зміни:\n1. Ім'я продукту.\n2. Вартість продукту.\nВаш вибір: ";
-				std::cin >> userInput;
+				std::wcout << L"РћР±РµСЂС–С‚СЊ РїР°СЂР°РјРµС‚СЂ РґР»СЏ Р·РјС–РЅРё:\n1. Р†Рј'СЏ РїСЂРѕРґСѓРєС‚Сѓ.\n2. Р’Р°СЂС‚С–СЃС‚СЊ РїСЂРѕРґСѓРєС‚Сѓ.\nР’Р°С€ РІРёР±С–СЂ: ";
+				std::wcin >> userInput;
 				if (userInput < MENU_MIN_SELECTION || userInput > MENU_MAX_SELECTION) {
-					std::cout << "Некоректний вибір. Повторіть спробу, будь-ласка.\n";
+					std::wcout << L"РќРµРєРѕСЂРµРєС‚РЅРёР№ РІРёР±С–СЂ. РџРѕРІС‚РѕСЂС–С‚СЊ СЃРїСЂРѕР±Сѓ, Р±СѓРґСЊ-Р»Р°СЃРєР°.\n";
 				}
 			} while (userInput < MENU_MIN_SELECTION || userInput > MENU_MAX_SELECTION);
 
 			switch (userInput) {
 			case 1:
 				while (true) {
-					std::cout << "Введіть нове ім'я продукту " << shop.getProducts().at(productID).getName() << ": ";
-					std::cin >> newName;
-					if (newName.find_first_of(invalidSymbols.data(), 0, invalidSymbols.size()) != std::string::npos) {
-						std::cout << "Ім'я продукту містить некоректні символи. Повторіть спробу, будь-ласка.\n";
+					std::wcout << L"Р’РІРµРґС–С‚СЊ РЅРѕРІРµ С–Рј'СЏ РїСЂРѕРґСѓРєС‚Сѓ " << shop.getProducts().at(productID).getName() << L": ";
+					std::wcin >> newName;
+					if (newName.find_first_of(invalidSymbols.data(), 0, invalidSymbols.size()) != std::wstring::npos) {
+						std::wcout << L"Р†Рј'СЏ РїСЂРѕРґСѓРєС‚Сѓ РјС–СЃС‚РёС‚СЊ РЅРµРєРѕСЂРµРєС‚РЅС– СЃРёРјРІРѕР»Рё. РџРѕРІС‚РѕСЂС–С‚СЊ СЃРїСЂРѕР±Сѓ, Р±СѓРґСЊ-Р»Р°СЃРєР°.\n";
 					}
 					else if (newName.size() < NAME_MIN_LENGTH || newName.size() > NAME_MAX_LENGTH) {
-						std::cout << "Мінімальна довжина імені продукту - " << NAME_MIN_LENGTH << " символів, максимальна довжина імені - " << NAME_MAX_LENGTH << " символів. Повторіть спробу, будь-ласка.\n";
+						std::wcout << L"РњС–РЅС–РјР°Р»СЊРЅР° РґРѕРІР¶РёРЅР° С–РјРµРЅС– РїСЂРѕРґСѓРєС‚Сѓ - " << NAME_MIN_LENGTH << L" СЃРёРјРІРѕР»С–РІ, РјР°РєСЃРёРјР°Р»СЊРЅР° РґРѕРІР¶РёРЅР° С–РјРµРЅС– - " << NAME_MAX_LENGTH << L" СЃРёРјРІРѕР»С–РІ. РџРѕРІС‚РѕСЂС–С‚СЊ СЃРїСЂРѕР±Сѓ, Р±СѓРґСЊ-Р»Р°СЃРєР°.\n";
 					}
 					else break;
 				}
 				shop.getProducts().at(productID).setName(newName);
-				std::cout << "Ім'я продукту успішно змінено. Нові дані продукту:\nID: " << shop.getProducts().at(productID).getId()
-					<< "\nІм'я: " << shop.getProducts().at(productID).getName()
-					<< "\nВартість: " << shop.getProducts().at(productID).getCost() << " грн.\n";
+				std::wcout << L"Р†Рј'СЏ РїСЂРѕРґСѓРєС‚Сѓ СѓСЃРїС–С€РЅРѕ Р·РјС–РЅРµРЅРѕ. РќРѕРІС– РґР°РЅС– РїСЂРѕРґСѓРєС‚Сѓ:\nID: " << shop.getProducts().at(productID).getId()
+					<< L"\nР†Рј'СЏ: " << shop.getProducts().at(productID).getName()
+					<< L"\nР’Р°СЂС‚С–СЃС‚СЊ: " << shop.getProducts().at(productID).getCost() << L" РіСЂРЅ.\n";
 				break;
 
 			case 2:
 				do {
-					std::cout << "Введіть нову вартість продукту: ";
-					std::cin >> newCost;
+					std::wcout << L"Р’РІРµРґС–С‚СЊ РЅРѕРІСѓ РІР°СЂС‚С–СЃС‚СЊ РїСЂРѕРґСѓРєС‚Сѓ: ";
+					std::wcin >> newCost;
 					if (newCost < MIN_COST || newCost > MAX_COST) {
-						std::cout << "Мінімальна вартість продукту - " << MIN_COST << ", максимальна - " << MAX_COST << ". Повторіть спробу, будь-ласка.\n";
+						std::wcout << L"РњС–РЅС–РјР°Р»СЊРЅР° РІР°СЂС‚С–СЃС‚СЊ РїСЂРѕРґСѓРєС‚Сѓ - " << MIN_COST << L", РјР°РєСЃРёРјР°Р»СЊРЅР° - " << MAX_COST << L". РџРѕРІС‚РѕСЂС–С‚СЊ СЃРїСЂРѕР±Сѓ, Р±СѓРґСЊ-Р»Р°СЃРєР°.\n";
 					}
 				} while (newCost < MIN_COST || newCost > MAX_COST);
 
 				shop.getProducts().at(productID).setCost(newCost);
-				std::cout << "Вартість продукту успішно змінено. Нові дані продукту:\nID: " << shop.getProducts().at(productID).getId()
-					<< "\nІм'я: " << shop.getProducts().at(productID).getName()
-					<< "\nВартість: " << shop.getProducts().at(productID).getCost() << " грн.\n";
+				std::wcout << L"Р’Р°СЂС‚С–СЃС‚СЊ РїСЂРѕРґСѓРєС‚Сѓ СѓСЃРїС–С€РЅРѕ Р·РјС–РЅРµРЅРѕ. РќРѕРІС– РґР°РЅС– РїСЂРѕРґСѓРєС‚Сѓ:\nID: " << shop.getProducts().at(productID).getId()
+					<< L"\nР†Рј'СЏ: " << shop.getProducts().at(productID).getName()
+					<< L"\nР’Р°СЂС‚С–СЃС‚СЊ: " << shop.getProducts().at(productID).getCost() << L" РіСЂРЅ.\n";
 				break;
 
 			default:
-				std::cout << "Уп-с! Сталася помилка. Повторіть спробу, будь-ласка.\n";
+				std::wcout << L"РЈРї-СЃ! РЎС‚Р°Р»Р°СЃСЏ РїРѕРјРёР»РєР°. РџРѕРІС‚РѕСЂС–С‚СЊ СЃРїСЂРѕР±Сѓ, Р±СѓРґСЊ-Р»Р°СЃРєР°.\n";
 				break;
 			}
 		}
 	}
 }
 
-// Видалити товар
+// Р’РёРґР°Р»РёС‚Рё С‚РѕРІР°СЂ
 void Admin::delProduct(int productID)
 {
 	if (shop.getProducts().empty()) {
-		std::cout << "Наразі у магазині немає продуктів.\n";
+		std::wcout << L"РќР°СЂР°Р·С– Сѓ РјР°РіР°Р·РёРЅС– РЅРµРјР°С” РїСЂРѕРґСѓРєС‚С–РІ.\n";
 	} else {
 		for (auto product = shop.getProducts().begin(); product != shop.getProducts().end(); ++product) {
 			if (product->getId() == productID) {
 				shop.getProducts().erase(product);
-				std::cout << "Покупець з ID " << productID << " був успішно видалений.\n";
+				std::wcout << L"РџРѕРєСѓРїРµС†СЊ Р· ID " << productID << L" Р±СѓРІ СѓСЃРїС–С€РЅРѕ РІРёРґР°Р»РµРЅРёР№.\n";
 				return;
 			}
 		}
-		std::cout << "Покупця з ID " << productID << " не знайдено.\n";
+		std::wcout << L"РџРѕРєСѓРїС†СЏ Р· ID " << productID << L" РЅРµ Р·РЅР°Р№РґРµРЅРѕ.\n";
 	}
 }
 
-// Переглянути всі замовлення на всі товари
+// РџРµСЂРµРіР»СЏРЅСѓС‚Рё РІСЃС– Р·Р°РјРѕРІР»РµРЅРЅСЏ РЅР° РІСЃС– С‚РѕРІР°СЂРё
 void Admin::showAllOrdersAllProducts()
 {
 	if (customers.empty()) {
-		std::cout << "Наразі у магазині немає покупців.\n";
+		std::wcout << L"РќР°СЂР°Р·С– Сѓ РјР°РіР°Р·РёРЅС– РЅРµРјР°С” РїРѕРєСѓРїС†С–РІ.\n";
 	} else {
 		for (auto& customer : customers) {
 			if (customer.getOrders().empty()) {
-				std::cout << "Наразі немає поточних замовлень.\n";
+				std::wcout << L"РќР°СЂР°Р·С– РЅРµРјР°С” РїРѕС‚РѕС‡РЅРёС… Р·Р°РјРѕРІР»РµРЅСЊ.\n";
 			} else {
 				for (auto& order : customer.getOrders()) {
-					std::cout << "ID: " << order.getId() << "\nСписок продуктів:\n";
+					std::wcout << L"ID: " << order.getId() << L"\nРЎРїРёСЃРѕРє РїСЂРѕРґСѓРєС‚С–РІ:\n";
 					for (auto& product : order.getProducts()) {
-						std::cout << "ID: " << product.getId()
-							<< "\nІм'я продукту: " << product.getName()
-							<< "\nВартість: " << product.getCost()
-							<< "\nАртикль: " << product.getArticle() << '\n';
+						std::wcout << L"ID: " << product.getId()
+							<< L"\nР†Рј'СЏ РїСЂРѕРґСѓРєС‚Сѓ: " << product.getName()
+							<< L"\nР’Р°СЂС‚С–СЃС‚СЊ: " << product.getCost()
+							<< L"\nРђСЂС‚РёРєР»СЊ: " << product.getArticle() << '\n';
 					}
-					std::cout << "Загальна сума замовлення: " << order.getTotalAmount() << '\n';
+					std::wcout << L"Р—Р°РіР°Р»СЊРЅР° СЃСѓРјР° Р·Р°РјРѕРІР»РµРЅРЅСЏ: " << order.getTotalAmount() << '\n';
 					if (order.getActive() == true) {
-						std::cout << "Статус замовлення: Активне.";
+						std::wcout << L"РЎС‚Р°С‚СѓСЃ Р·Р°РјРѕРІР»РµРЅРЅСЏ: РђРєС‚РёРІРЅРµ.";
 					} else if (order.getActive() == false) {
-						std::cout << "Статус замовлення: Неактивне.";
+						std::wcout << L"РЎС‚Р°С‚СѓСЃ Р·Р°РјРѕРІР»РµРЅРЅСЏ: РќРµР°РєС‚РёРІРЅРµ.";
 					}
 				}
 			}
@@ -348,20 +364,20 @@ void Admin::showAllOrdersAllProducts()
 	}
 }
 
-// Видалити обране замовлення
+// Р’РёРґР°Р»РёС‚Рё РѕР±СЂР°РЅРµ Р·Р°РјРѕРІР»РµРЅРЅСЏ
 void Admin::delOrderProduct(int orderID)
 {
 	if (customers.empty()) {
-		std::cout << "Наразі у магазині немає покупців.\n";
+		std::wcout << L"РќР°СЂР°Р·С– Сѓ РјР°РіР°Р·РёРЅС– РЅРµРјР°С” РїРѕРєСѓРїС†С–РІ.\n";
 	} else {
 		for (auto& customer : customers) {
 			if (customer.getOrders().empty()) {
-				std::cout << "Наразі немає поточних замовлень.\n";
+				std::wcout << L"РќР°СЂР°Р·С– РЅРµРјР°С” РїРѕС‚РѕС‡РЅРёС… Р·Р°РјРѕРІР»РµРЅСЊ.\n";
 			} else {
 				for (auto order = customer.getOrders().begin(); order != customer.getOrders().end(); ++order) {
 					if (order->getId() == orderID) {
 						customer.getOrders().erase(order);
-						std::cout << "Замовлення з ID " << orderID << " було успішно видалено.\n";
+						std::wcout << L"Р—Р°РјРѕРІР»РµРЅРЅСЏ Р· ID " << orderID << L" Р±СѓР»Рѕ СѓСЃРїС–С€РЅРѕ РІРёРґР°Р»РµРЅРѕ.\n";
 						return;
 					}
 				}
@@ -370,25 +386,25 @@ void Admin::delOrderProduct(int orderID)
 	}
 }
 
-// Видалити всі замовлення певного товару
+// Р’РёРґР°Р»РёС‚Рё РІСЃС– Р·Р°РјРѕРІР»РµРЅРЅСЏ РїРµРІРЅРѕРіРѕ С‚РѕРІР°СЂСѓ
 void Admin::delAllOrdersProduct(int productID)
 {
 	if (customers.empty()) {
-		std::cout << "Наразі у магазині немає покупців.\n";
+		std::wcout << L"РќР°СЂР°Р·С– Сѓ РјР°РіР°Р·РёРЅС– РЅРµРјР°С” РїРѕРєСѓРїС†С–РІ.\n";
 	} else {
 		for (auto& customer : customers) {
 			if (customer.getOrders().empty()) {
-				std::cout << "Наразі немає поточних замовлень.\n";
+				std::wcout << L"РќР°СЂР°Р·С– РЅРµРјР°С” РїРѕС‚РѕС‡РЅРёС… Р·Р°РјРѕРІР»РµРЅСЊ.\n";
 			} else {
 				for (auto& customer : customers) {
 					if (customer.getOrders().empty()) {
-						std::cout << "Наразі немає поточних замовлень.\n";
+						std::wcout << L"РќР°СЂР°Р·С– РЅРµРјР°С” РїРѕС‚РѕС‡РЅРёС… Р·Р°РјРѕРІР»РµРЅСЊ.\n";
 					} else {
 						for (auto order = customer.getOrders().begin(); order != customer.getOrders().end(); ++order) {
 							for (auto product = order->getProducts().begin(); product != order->getProducts().end(); ++product) {
 								if (product->getId() == productID) {
 									customer.getOrders().erase(order);
-									std::cout << "Продукт з ID " << productID << " було успішно видалено.\n";
+									std::wcout << L"РџСЂРѕРґСѓРєС‚ Р· ID " << productID << L" Р±СѓР»Рѕ СѓСЃРїС–С€РЅРѕ РІРёРґР°Р»РµРЅРѕ.\n";
 									return;
 								}
 							}
@@ -400,18 +416,18 @@ void Admin::delAllOrdersProduct(int productID)
 	}
 }
 
-// Видалити абсолютно всі замовлення на всі товари
+// Р’РёРґР°Р»РёС‚Рё Р°Р±СЃРѕР»СЋС‚РЅРѕ РІСЃС– Р·Р°РјРѕРІР»РµРЅРЅСЏ РЅР° РІСЃС– С‚РѕРІР°СЂРё
 void Admin::delAllOrdersAllProducts()
 {
 	if (customers.empty()) {
-		std::cout << "Наразі у магазині немає покупців.\n";
+		std::wcout << L"РќР°СЂР°Р·С– Сѓ РјР°РіР°Р·РёРЅС– РЅРµРјР°С” РїРѕРєСѓРїС†С–РІ.\n";
 	} else {
 		for (auto& customer : customers) {
 			if (customer.getOrders().empty()) {
-				std::cout << "Наразі немає поточних замовлень.\n";
+				std::wcout << L"РќР°СЂР°Р·С– РЅРµРјР°С” РїРѕС‚РѕС‡РЅРёС… Р·Р°РјРѕРІР»РµРЅСЊ.\n";
 			} else {
 				customer.getOrders().clear();
-				std::cout << "Усі замовлення на усі продукти успішно видалені.\n";
+				std::wcout << L"РЈСЃС– Р·Р°РјРѕРІР»РµРЅРЅСЏ РЅР° СѓСЃС– РїСЂРѕРґСѓРєС‚Рё СѓСЃРїС–С€РЅРѕ РІРёРґР°Р»РµРЅС–.\n";
 			}
 		}
 	}
