@@ -22,6 +22,4 @@ public:
 	void setRole(int role);
 	void setLogin(std::wstring login);
 	void setPassword(std::wstring password);
-
-	bool auth(std::wstring _login, std::wstring _password);
 };
