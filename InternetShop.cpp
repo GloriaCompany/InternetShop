@@ -2,18 +2,20 @@
 #include <io.h>
 #include <fcntl.h>
 #include <deque>
+#include <array>
 #include <string>
-//#include <Windows.h>
 #include <limits>
 #include "defines.h"
 #include "Admin.h"
 
 using namespace std;
 
+// Масив символів, що повинні валідуватися
+const std::array<wchar_t, 25> invalidSymbols = { '!','@','.','/','[',']','(',')','$','%','^','&','*',':',';','"','`','<','>',',','-','+','№','?' };
+
 int main()
 {
-	/*SetConsoleCP(1251);
-	SetConsoleOutputCP(1251);*/
+	srand((unsigned int)time(nullptr));
 
 	Shop shop;
 	Order newOrder;
@@ -22,13 +24,13 @@ int main()
 	deque<User> users;
 	deque<Customer> customers;
 
-	int autoincrementID;
 	wstring login, password;
 	int option;
 
 	wstring newCustomerLogin, newCustomerPassword, productName, productArticle;
 	int customerID = 0, productID = 0, orderID = 0;
 	double productCost = 0;
+	bool isExists = false;
 
 	users.push_back(admin);
 	if (!customers.empty()) admin.setCustomers(customers);
@@ -54,7 +56,7 @@ int main()
 			wcin >> option;
 		}
 		catch (istream::failure e) {
-			system("cls");
+			std::system("cls");
 			wcout << RED << L" Введіть коректні дані.\n";
 			wcin.clear();
 			wcin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -65,15 +67,20 @@ int main()
 		{
 			case(1):
 			{
-				system("cls");
+				std::system("cls");
 				wcout << WHT << L"Логін: " << CYN;
 				wcin >> login;
 				wcout << WHT << L"Пароль: " << CYN;
 				wcin >> password;
-				system("cls");
-				for (auto& user : users) {
-					if (user.getLogin() == login /*&& user.getPassword() == password*/) {
-						if (user.getRole() == ADMIN_CODE) {
+				std::system("cls");
+
+				for (auto& user : users) 
+				{
+					if (user.getLogin() == login && user.getPassword() == password) 
+					{
+						isExists = true;
+						if (user.getRole() == ADMIN_CODE && isExists) 
+						{
 							while (true)
 							{
 								wcout
@@ -103,8 +110,9 @@ int main()
 								{
 									wcin >> option;
 								}
-								catch (istream::failure e) {
-									system("cls");
+								catch (istream::failure e) 
+								{
+									std::system("cls");
 									wcout << RED << L" Введіть коректні дані.\n";
 									wcin.clear();
 									wcin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -112,116 +120,256 @@ int main()
 								}
 
 								switch (option) {
-									// 1. Додати клієнта
+								// 1. Додати клієнта
 								case(1):
-									wcout << WHT << L"\nВведіть логін нового покупця: " << CYN;
+									std::system("cls");
+
+									wcout << WHT << L"Введіть логін нового покупця: " << CYN;
 									wcin >> newCustomerLogin;
-									wcout << WHT << L"\nВведіть пароль нового покупця: " << CYN;
+									wcout << WHT << L"Введіть пароль нового покупця: " << CYN;
 									wcin >> newCustomerPassword;
-									admin.addCustomer(Customer(1, CUSTOMER_CODE, newCustomerLogin, newCustomerPassword));
-									system("cls");
-									wcout << GRN << L"\nПокупця " << MAG << newCustomerLogin << WHT << L" додано!\n";
+
+									admin.addCustomer(Customer(rand() % RAND_MAX + 1, CUSTOMER_CODE, newCustomerLogin, newCustomerPassword));
+
+									std::system("pause");
+									std::system("cls");
+
 									break;
-									// 2. Редагувати інформацію про клієнта
+								// 2. Редагувати інформацію про клієнта
 								case(2):
+									std::system("cls");
+
 									customerID = 0;
-									wcout << WHT << L"\nВведіть ідентифікатор клієнта: " << CYN;
-									wcin >> customerID;
+									do 
+									{
+										wcout << WHT << L"Введіть ідентифікатор клієнта: " << CYN;
+										wcin >> customerID;
+										if (customerID < 0) 
+										{
+											wcout << RED << L" Введіть коректні дані.\n";
+										}
+									} while (customerID < 0);
+
 									admin.editCustomer(customerID);
+
+									std::system("pause");
+									std::system("cls");
 									break;
-									// 3. Видалити клієнта
+								// 3. Видалити клієнта
 								case(3):
+									std::system("cls");
+
 									customerID = 0;
-									wcout << WHT << L"\nВведіть ідентифікатор клієнта: " << CYN;
-									wcin >> customerID;
+									do 
+									{
+										wcout << WHT << L"Введіть ідентифікатор клієнта: " << CYN;
+										wcin >> customerID;
+										if (customerID < 0) 
+										{
+											wcout << RED << L" Введіть коректні дані.\n";
+										}
+									} while (customerID < 0);
+
 									admin.delCustomer(customerID);
+
+									std::system("pause");
+									std::system("cls");
 									break;
-									// 4. Переглянути всі товари
+								// 4. Переглянути всі товари
 								case(4):
+									std::system("cls");
+
 									admin.showAllProducts();
+
+									std::system("pause");
+									std::system("cls");
 									break;
-									// 5. Знайти товар за назвою
+								// 5. Знайти товар за назвою
 								case(5):
+									std::system("cls");
+
 									productName = L"";
-									wcout << WHT << L"\nВведіть назву товару: " << CYN;
+									wcout << WHT << L"Введіть назву товару: " << CYN;
 									wcin >> productName;
+
 									admin.showInfoProductByName(productName);
+
+									std::system("pause");
+									std::system("cls");
 									break;
-									// 6. Знайти товар за артиклем
+								// 6. Знайти товар за артиклем
 								case(6):
+									std::system("cls");
+
 									productArticle = L"";
-									wcout << WHT << L"\nВведіть артикль: " << CYN;
+									wcout << WHT << L"Введіть артикль: " << CYN;
 									wcin >> productArticle;
+
 									admin.showInfoProductByArticle(productArticle);
+
+									std::system("pause");
+									std::system("cls");
 									break;
-									// 7. Відкрити інформацію про товар
+								// 7. Відкрити інформацію про товар
 								case(7):
+									std::system("cls");
+
 									productID = 0;
-									wcout << WHT << L"Введіть ідентифікатор товару: " << CYN;
-									wcin >> productID;
+									do 
+									{
+										wcout << WHT << L"Введіть ідентифікатор товару: " << CYN;
+										wcin >> productID;
+										if (productID < 0) 
+										{
+											wcout << RED << L" Введіть коректні дані.\n";
+										}
+									} while (productID < 0);
+
 									admin.showProductInfoById(productID);
+
+									std::system("pause");
+									std::system("cls");
 									break;
-									// 8. Додати товар.
+								// 8. Додати товар.
 								case(8):
+									std::system("cls");
+
 									productName = L"";
 									productArticle = L"";
 									productCost = 0;
-									wcout << WHT << L"\nВведіть назву товару: " << CYN;
+									wcout << WHT << L"Введіть назву товару: " << CYN;
 									wcin >> productName;
-									wcout << WHT << L"\nВведіть артикль для товару: " << CYN;
+									wcout << WHT << L"Введіть артикль для товару: " << CYN;
 									wcin >> productArticle;
-									wcout << WHT << L"\nВведіть вартість товару: " << CYN;
-									wcin >> productCost;
-									admin.addProduct(Product(1, productName, productArticle, productCost));
+
+									do 
+									{
+										wcout << WHT << L"Введіть вартість товару: " << CYN;
+										wcin >> productCost;
+										if (productCost < 0) 
+										{
+											wcout << RED << L" Введіть коректні дані.\n";
+										}
+									} while (productCost < 0);
+
+									admin.addProduct(Product(rand() % RAND_MAX + 1, productName, productArticle, productCost));
+
+									std::system("pause");
+									std::system("cls");
 									break;
-									// 9. Редагувати інформацію про товар
+								// 9. Редагувати інформацію про товар
 								case(9):
+									std::system("cls");
+
 									productID = 0;
-									wcout << WHT << L"Введіть ідентифікатор товару: " << CYN;
-									wcin >> productID;
+									do 
+									{
+										wcout << WHT << L"Введіть ідентифікатор товару: " << CYN;
+										wcin >> productID;
+										if (productID < 0) 
+										{
+											wcout << RED << L" Введіть коректні дані.\n";
+										}
+									} while (productID < 0);
+
 									admin.editProduct(productID);
+
+									std::system("pause");
+									std::system("cls");
 									break;
-									// 10. Видалити товар.
+								// 10. Видалити товар.
 								case(10):
+									std::system("cls");
+
 									productID = 0;
-									wcout << WHT << L"Введіть ідентифікатор товару: " << CYN;
-									wcin >> productID;
+									do 
+									{
+										wcout << WHT << L"Введіть ідентифікатор товару: " << CYN;
+										wcin >> productID;
+										if (productID < 0) 
+										{
+											wcout << RED << L" Введіть коректні дані.\n";
+										}
+									} while (productID < 0);
+
 									admin.delProduct(productID);
+
+									std::system("pause");
+									std::system("cls");
 									break;
-									// 11. Переглянути всі замовлення на всі товари.
+								// 11. Переглянути всі замовлення на всі товари.
 								case(11):
+									std::system("cls");
+
 									admin.showAllOrdersAllProducts();
+
+									std::system("pause");
+									std::system("cls");
 									break;
-									// 12. Видалити обране замовлення
+								// 12. Видалити обране замовлення
 								case(12):
+									std::system("cls");
+
 									productID = 0;
-									wcout << WHT << L"Введіть ідентифікатор товару: " << CYN;
-									wcin >> productID;
+									do 
+									{
+										wcout << WHT << L"Введіть ідентифікатор товару: " << CYN;
+										wcin >> productID;
+										if (productID < 0) 
+										{
+											wcout << RED << L" Введіть коректні дані.\n";
+										}
+									} while (productID < 0);
+
 									admin.delOrderProduct(productID);
+
+									std::system("pause");
+									std::system("cls");
 									break;
-									// 13. Видалити всі замовлення певного товару
+								// 13. Видалити всі замовлення певного товару
 								case(13):
+									std::system("cls");
+
 									productID = 0;
-									wcout << WHT << L"Введіть ідентифікатор товару: " << CYN;
-									wcin >> productID;
+									do 
+									{
+										wcout << WHT << L"Введіть ідентифікатор товару: " << CYN;
+										wcin >> productID;
+										if (productID < 0) 
+										{
+											wcout << RED << L" Введіть коректні дані.\n";
+										}
+									} while (productID < 0);
+
 									admin.delAllOrdersProduct(productID);
+
+									std::system("pause");
+									std::system("cls");
 									break;
-									// 14. Видалити абсолютно всі замовлення на всі товари
+								// 14. Видалити абсолютно всі замовлення на всі товари
 								case(14):
+									std::system("cls");
+
 									admin.delAllOrdersAllProducts();
+
+									std::system("pause");
+									std::system("cls");
 									break;
-									// 0. До попереднього меню
+								// 0. До попереднього меню
 								case(0):
 									break;
 								default:
-									system("cls");
+									std::system("cls");
 									wcout << RED << L" Опцію не знайдено. Повторіть спробу, будь-ласка.\n";
 									break;
 								}
 							}
-						} else if (user.getRole() == CUSTOMER_CODE) {
-							for (auto& customer : customers) {
-								if (user.getLogin() == customer.getLogin() && user.getPassword() == customer.getPassword()) {
+						} else if (user.getRole() == CUSTOMER_CODE) 
+						{
+							for (auto customer : customers)
+							{
+								if (user.getLogin() == customer.getLogin() && user.getPassword() == customer.getPassword()) 
+								{
 									option = 0;
 									wcout << "Ви увійшли, як " << customer.getLogin() << L".\nРоль: Покупець.";
 									wcout << L"Оберіть дію:"
@@ -234,32 +382,75 @@ int main()
 										<< L"\n7. Відмовитися від замовлення."
 										<< L"\n0. До попереднього меню."
 										<< L"\nВаш вибір (0 - 7): ";
-									wcin >> option;
+
+									try
+									{
+										wcin >> option;
+									}
+									catch (istream::failure e) 
+									{
+										std::system("cls");
+										wcout << RED << L" Введіть коректні дані.\n";
+										wcin.clear();
+										wcin.ignore(numeric_limits<streamsize>::max(), '\n');
+										continue;
+									}
+
 									switch (option) {
 									// 1. Переглянути всі товари
 									case(1):
+										std::system("cls");
+
 										customer.showAllProducts();
+
+										std::system("pause");
+										std::system("cls");
 										break;
 									// 2. Знайти товар за назвою
 									case(2):
+										std::system("cls");
+
 										productName = L"";
-										wcout << L"\nВведіть назву товару: ";
+										wcout << WHT << L"Введіть назву товару: ";
 										wcin >> productName;
+
 										customer.showInfoProductByName(productName);
+
+										std::system("pause");
+										std::system("cls");
 										break;
 									// 3. Знайти товар за артиклем
 									case(3):
+										std::system("cls");
+
 										productArticle = L"";
-										wcout << L"\nВведіть артикль: ";
+										wcout << WHT << L"Введіть артикль: ";
 										wcin >> productArticle;
+
 										customer.showInfoProductByArticle(productArticle);
+
+										std::system("pause");
+										std::system("cls");
 										break;
 									// 4. Відкрити інформацію про товар
 									case(4):
+										std::system("cls");
+
 										productID = 0;
-										wcout << L"Введіть ідентифікатор товару: ";
-										wcin >> productID;
+										do 
+										{
+											wcout << WHT << L"Введіть ідентифікатор товару: " << CYN;
+											wcin >> productID;
+											if (productID < 0) 
+											{
+												wcout << RED << L" Введіть коректні дані.\n";
+											}
+										} while (productID < 0);
+
 										customer.showInfoProduct(productID);
+
+										std::system("pause");
+										std::system("cls");
 										break;
 									// 5. Купити товар
 									case(5):
@@ -267,14 +458,32 @@ int main()
 										break;
 									// 6. Переглянути свої замовлення
 									case(6):
+										std::system("cls");
+
 										customer.getOrders();
+
+										std::system("pause");
+										std::system("cls");
 										break;
 									// 7. Відмовитися від замовлення
 									case(7):
+										std::system("cls");
+
 										orderID = 0;
-										wcout << L"Введіть ідентифікатор замовлення: ";
-										wcin >> orderID;
+										do 
+										{
+											wcout << WHT << L"Введіть ідентифікатор замовлення: " << CYN;
+											wcin >> orderID;
+											if (orderID < 0) 
+											{
+												wcout << RED << L" Введіть коректні дані.\n";
+											}
+										} while (orderID < 0);
+
 										customer.cancelOrder(orderID);
+
+										std::system("pause");
+										std::system("cls");
 										break;
 									// 0. До попереднього меню
 									case(0):
@@ -284,23 +493,26 @@ int main()
 							}
 						}
 					}
+					else {
+						wcout << RED << L"Користувача з такими даними не знайдено. Повторіть спробу, будь-ласка.\n";
+					}
 				}
 				break;
 			}
 			case(2):
 			{
-				system("cls");
+				std::system("cls");
 				wcout << CYN << L"Вихід...\n";
 				return 0;
 				break;
 			default:
-				system("cls");
+				std::system("cls");
 				wcout << RED << L" Опцію не знайдено. Повторіть спробу, будь-ласка.\n";
 				break;
 			}
 		}
 	}
 
-	system("pause");
+	std::system("pause");
 	return 0;
 }

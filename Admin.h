@@ -1,6 +1,9 @@
 #include "User.h"
 #include "Customer.h"
 #include "Shop.h"
+#include <iostream>
+#include <limits>
+#include <array>
 #include <deque>
 
 class Admin : public User
