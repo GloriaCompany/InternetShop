@@ -8,3 +8,10 @@ bool Order::getActive() { return this->isActive; }
 void Order::setId(int id) { this->id = id; }
 void Order::setProducts(std::deque<Product>& products) { this->products = products; }
 void Order::setActive(bool isActive) { this->isActive = isActive; }
+
+void Order::calculateTotalAmount()
+{
+    for (auto& product : this->products) {
+        this->totalAmount += product.getCost();
+    }
+}
