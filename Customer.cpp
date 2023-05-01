@@ -8,7 +8,7 @@ Customer::Customer(size_t _id, int _role, std::wstring _login, std::wstring _pas
 	: User(_id, _role, _login, _password) {}
 
 std::deque<Order> Customer::getOrders() { return this->orders; }
-void Customer::setOrders(Order& order) { this->orders.push_back(order); }
+void Customer::setOrders(std::deque<Order>& orders) { this->orders = orders; }
 
 void Customer::showInfoProduct(int id)
 {

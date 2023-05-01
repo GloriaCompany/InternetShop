@@ -11,6 +11,8 @@ class Admin : public User
 private:
 	Shop shop;
 	std::deque<User> users;
+	std::deque<Product> products;
+	std::deque<Order> orders;
 public:
 	Admin(int _id, int _role, std::wstring _login, std::wstring _password);
 
