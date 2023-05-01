@@ -49,7 +49,7 @@ void Admin::addCustomer(User newCustomer)
 		}
 		if (!isExists && newCustomer.getRole() == CUSTOMER_CODE) 
 		{
-			users.push_back(newCustomer);
+			this->users.push_back(newCustomer);
 			std::wcout << GRN << L"Нового покупця успішно додано.\n";
 		}
 	}
@@ -200,7 +200,6 @@ void Admin::editCustomer(int customerID)
 				{
 					break;
 				}
-
 			}
 		}
 	}
@@ -232,7 +231,7 @@ void Admin::delCustomer(int customerID)
 		{
 			if (user->getId() == customerID && user->getRole() == CUSTOMER_CODE)
 			{
-				users.erase(user);
+				this->users.erase(user);
 				std::wcout << GRN << L"Покупець з ID " << customerID << L" був успішно видалений.\n";
 				return;
 			}
@@ -344,6 +343,7 @@ void Admin::addProduct(Product newProduct)
 	}
 	else 
 	{
+		this->products = shop.getProducts();
 		bool isExists = false;
 		for (auto& product : shop.getProducts()) 
 		{
@@ -372,6 +372,8 @@ void Admin::editProduct(int productID)
 	constexpr int MENU_MIN_SELECTION = 1, MENU_MAX_SELECTION = 2;
 	double newCost = 0;
 	std::wstring newName;
+
+	this->products = shop.getProducts();
 
 	for (auto& product : this->products) 
 	{
@@ -454,7 +456,9 @@ void Admin::editProduct(int productID)
 // Видалити товар
 void Admin::delProduct(int productID)
 {
-	if (shop.getProducts().empty()) 
+	this->products = shop.getProducts();
+
+	if (this->products.empty())
 	{
 		std::wcout << RED << L"Наразі у магазині немає продуктів.\n";
 	} 
