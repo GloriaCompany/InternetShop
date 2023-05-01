@@ -75,9 +75,10 @@ void Admin::editCustomer(int customerID)
 					<< L"├──────────────────────────────────┤\n"
 					<< L"│" << CYN << L" 1. " << GRN << L"Логін покупця.		   " << WHT << L"│\n"
 					<< L"│" << CYN << L" 2. " << GRN << L"Пароль покупця.		   " << WHT << L"│\n"
-					<< L"│" << CYN << L" 3. " << GRN << L"До попереднього меню.	   " << WHT << L"│\n"
+					<< L"│" << CYN << L" 3. " << GRN << L"Код ролі покупця.		   " << WHT << L"│\n"
+					<< L"│" << CYN << L" 0. " << GRN << L"До попереднього меню.	   " << WHT << L"│\n"
 					<< L"╰──────────────────────────────────╯\n"
-					<< L" Ваш вибір : " << CYN;
+					<< L" Оберіть опцію (0 - 3): " << CYN;
 				try
 				{
 					std::wcin >> userInput;
@@ -118,7 +119,7 @@ void Admin::editCustomer(int customerID)
 						<< WHT << L"\nНові дані користувача : \nID : " << user.getId()
 						<< WHT << L"\nЛогін: " << user.getLogin()
 						<< WHT << L"\nПароль : " << user.getPassword()
-						<< WHT << L"\nКод ролі : " << user.getRole();
+						<< WHT << L"\nКод ролі : " << user.getRole() << L"\n";
 					break;
 
 				case 2:
@@ -186,11 +187,20 @@ void Admin::editCustomer(int customerID)
 						break;
 					}
 					break;
-
+				case 0:
+				{
+					break;
+				}
 				default:
 					std::wcout << RED << L"Уп-с! Сталася помилка. Повторіть спробу, будь-ласка.\n";
 					break;
 				}
+
+				if (userInput == 0)
+				{
+					break;
+				}
+
 			}
 		}
 	}
