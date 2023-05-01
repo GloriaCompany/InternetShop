@@ -486,7 +486,23 @@ int main()
 										break;
 										// 5. Купити товар
 									case(5):
-										// ДОПИЛИТЬ НОРМАЛЬНУЮ ПОКУПКУ
+										std::system("cls");
+
+										customer.showAllProducts();
+										productID = 0;
+										do
+										{
+											wcout << WHT << L"Введіть ідентифікатор товару: " << CYN;
+											wcin >> productID;
+											if (productID < 0)
+											{
+												wcout << RED << L" Введіть коректні дані.\n";
+											}
+										} while (productID < 0);
+
+										// ДОПИЛИТЬ
+
+										customer.buyProduct(productID);
 										break;
 										// 6. Переглянути свої замовлення
 									case(6):

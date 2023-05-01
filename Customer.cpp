@@ -2,38 +2,55 @@
 #include <iostream>
 
 Customer::Customer() {}
-Customer::~Customer() {}
 
-Customer::Customer(size_t _id, int _role, std::wstring _login, std::wstring _password)
-	: User(_id, _role, _login, _password) {}
+Customer::Customer(int _id, int _role, std::wstring _login, std::wstring _password) : User(_id, _role, _login, _password) {}
 
 std::deque<Order> Customer::getOrders() { return this->orders; }
+void Customer::setOrder(Order order)
+{
+
+}
+
 void Customer::setOrders(std::deque<Order>& orders) { this->orders = orders; }
 
 void Customer::showInfoProduct(int id)
 {
-	for (auto& product : shop.getProducts())
+	if (shop.getProducts().empty()) 
 	{
-		if (product.getId() == id)
+		std::wcout << L"Наразі у магазині немає продуктів. Поверніться будь-ласка, пізніше.\n";
+	} 
+	else
+	{
+		for (auto& product : shop.getProducts())
 		{
-			std::wcout << L"\nНазва продукту: " << product.getName()
-				<< L"\nВартість продукту: " << product.getCost()
-				<< L"\nАртикль: " << product.getArticle() << '\n';
+			if (product.getId() == id)
+			{
+				std::wcout << L"\nНазва продукту: " << product.getName()
+					<< L"\nВартість продукту: " << product.getCost()
+					<< L"\nАртикль: " << product.getArticle() << '\n';
+			}
 		}
 	}
 }
 
 void Customer::buyProduct(int id)
 {
-	for (auto& product : shop.getProducts())
+	if (shop.getProducts().empty())
 	{
-		if (product.getId() == id)
+		std::wcout << L"Наразі у магазині немає продуктів. Поверніться будь-ласка, пізніше.\n";
+	}
+	else
+	{
+		for (auto& product : shop.getProducts())
 		{
-			products.push_back(product);
-
-			for (auto& order : orders)
+			if (product.getId() == id)
 			{
-				order.setProducts(products);
+				products.push_back(product);
+
+				for (auto& order : orders)
+				{
+					order.setProduct(product);
+				}
 			}
 		}
 	}
@@ -41,24 +58,38 @@ void Customer::buyProduct(int id)
 
 void Customer::showAllOrders()
 {
-	for (auto& order : orders)
+	if (orders.empty())
 	{
-		for (auto& product : order.getProducts())
+		std::wcout << L"Наразі у вас немає поточних замовлень.\n";
+	}
+	else
+	{
+		for (auto& order : orders)
 		{
-			std::wcout << L"\nНазва продукту: " << product.getName()
-				<< L"\nВартість продукту: " << product.getCost()
-				<< L"\nАртикль: " << product.getArticle() << '\n';
+			for (auto& product : order.getProducts())
+			{
+				std::wcout << L"\nНазва продукту: " << product.getName()
+					<< L"\nВартість продукту: " << product.getCost()
+					<< L"\nАртикль: " << product.getArticle() << '\n';
+			}
 		}
 	}
 }
 
 void Customer::cancelOrder(int id)
 {
-	for (auto& order : orders)
+	if (orders.empty())
 	{
-		if (order.getId() == id)
+		std::wcout << L"Наразі у вас немає поточних замовлень.\n";
+	}
+	else
+	{
+		for (auto& order : orders)
 		{
-			order.setActive(false);
+			if (order.getId() == id)
+			{
+				order.setActive(false);
+			}
 		}
 	}
 }

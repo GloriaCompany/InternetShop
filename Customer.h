@@ -12,10 +12,10 @@ private:
 	std::deque<Order> orders;
 public:
 	Customer();
-	~Customer();
-	Customer(size_t _id, int _role, std::wstring _login, std::wstring _password);
+	Customer(int _id, int _role, std::wstring _login, std::wstring _password);
 
 	std::deque<Order> getOrders();
+	void setOrder(Order order);
 	void setOrders(std::deque<Order>& orders);
 
 	void showInfoProduct(int id);

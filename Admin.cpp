@@ -405,7 +405,7 @@ void Admin::editProduct(int productID)
 			case 1:
 				while (true) 
 				{
-					std::wcout << WHT << L"Введіть нове ім'я продукту " << shop.getProducts().at(productID).getName() << L": " << CYN;
+					std::wcout << WHT << L"Введіть нове ім'я продукту: " << CYN;
 					std::wcin >> newName;
 					if (newName.find_first_of(invalidSymbols.data(), 0, invalidSymbols.size()) != std::wstring::npos) 
 					{

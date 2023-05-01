@@ -1,8 +1,8 @@
 #include "User.h"
 #include <limits>
 #include <array>
+#include "Shop.h"
 
-User::User() {}
 User::User(int _id, int _role, std::wstring _login, std::wstring _password)
 	: id(_id), role(_role), login(_login), password(_password){}
 
