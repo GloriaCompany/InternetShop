@@ -8,6 +8,7 @@ class Customer : public User
 {
 private:
 	Shop shop;
+	std::deque<Product> products;
 	std::deque<Order> orders;
 public:
 	Customer();
@@ -18,7 +19,7 @@ public:
 	void setOrders(Order& order);
 
 	void showInfoProduct(int id);
-	void buyProduct(Order order);
+	void buyProduct(int id);
 	void showAllOrders();
 	void cancelOrder(int id);
 

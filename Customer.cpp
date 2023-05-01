@@ -23,9 +23,20 @@ void Customer::showInfoProduct(int id)
 	}
 }
 
-void Customer::buyProduct(Order order)
+void Customer::buyProduct(int id)
 {
-	orders.push_back(order);
+	for (auto& product : shop.getProducts())
+	{
+		if (product.getId() == id)
+		{
+			products.push_back(product);
+
+			for (auto& order : orders)
+			{
+				order.setProducts(products);
+			}
+		}
+	}
 }
 
 void Customer::showAllOrders()
