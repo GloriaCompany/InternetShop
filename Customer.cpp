@@ -1,7 +1,10 @@
 #include "Customer.h"
 #include <iostream>
 
-Customer::Customer(int _id, int _role, std::wstring _login, std::wstring _password)
+Customer::Customer() {}
+Customer::~Customer() {}
+
+Customer::Customer(size_t _id, int _role, std::wstring _login, std::wstring _password)
 	: User(_id, _role, _login, _password) {}
 
 std::deque<Order> Customer::getOrders() { return this->orders; }

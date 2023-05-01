@@ -10,7 +10,9 @@ private:
 	Shop shop;
 	std::deque<Order> orders;
 public:
-	Customer(int _id, int _role, std::wstring _login, std::wstring _password);
+	Customer();
+	~Customer();
+	Customer(size_t _id, int _role, std::wstring _login, std::wstring _password);
 
 	std::deque<Order> getOrders();
 	void setOrders(Order& order);

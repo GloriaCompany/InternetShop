@@ -10,15 +10,15 @@ class Admin : public User
 {
 private:
 	Shop shop;
-	std::deque<Customer> customers;
+	std::deque<User> users;
 public:
 	Admin(int _id, int _role, std::wstring _login, std::wstring _password);
 
-	std::deque<Customer> getCustomers();
-	void setCustomers(const std::deque<Customer>& customers);
+	std::deque<User> getUsers();
+	void setUsers(const std::deque<User>& users);
 
 	// Операції
-	void addCustomer(Customer newCustomer);
+	void addCustomer(User newCustomer);
 	void editCustomer(int customerID);
 	void delCustomer(int customerID);
 	void addProduct(Product newProduct);

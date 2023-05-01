@@ -10,6 +10,7 @@ private:
 	std::wstring login;
 	std::wstring password;
 public:
+	User();
 	User(int _id, int _role, std::wstring _login, std::wstring _password);
 	virtual ~User();
 
