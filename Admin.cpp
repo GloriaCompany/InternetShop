@@ -356,7 +356,8 @@ void Admin::addProduct(Product newProduct)
 		}
 		if (!isExists) 
 		{
-			shop.getProducts().push_back(newProduct);
+			this->products.push_back(newProduct);
+			shop.setProducts(this->products);
 			std::wcout << GRN << L"Новий продукт успішно додано.\n";
 		}
 	}
@@ -372,7 +373,7 @@ void Admin::editProduct(int productID)
 	double newCost = 0;
 	std::wstring newName;
 
-	for (auto& product : shop.getProducts()) 
+	for (auto& product : this->products) 
 	{
 		if (product.getId() == productID) 
 		{
@@ -416,6 +417,7 @@ void Admin::editProduct(int productID)
 				}
 
 				product.setName(newName);
+				shop.setProducts(this->products);
 				std::wcout << GRN << L"Ім'я продукту успішно змінено.\n" 
 					<< WHT << L"Нові дані продукту : \nID : " << product.getId()
 					<< WHT << L"\nІм'я: " << product.getName()
@@ -434,6 +436,7 @@ void Admin::editProduct(int productID)
 				} while (newCost < MIN_COST || newCost > MAX_COST);
 
 				product.setCost(newCost);
+				shop.setProducts(this->products);
 				std::wcout << GRN << L"Вартість продукту успішно змінено.\n"
 					<< WHT << L"Нові дані продукту : \nID : " << product.getId()
 					<< WHT << L"\nІм'я: " << product.getName()
@@ -457,11 +460,12 @@ void Admin::delProduct(int productID)
 	} 
 	else 
 	{
-		for (auto product = shop.getProducts().begin(); product != shop.getProducts().end(); ++product) 
+		for (auto product = this->products.begin(); product != this->products.end(); ++product)
 		{
 			if (product->getId() == productID) 
 			{
-				shop.getProducts().erase(product);
+				this->products.erase(product);
+				shop.setProducts(this->products);
 				std::wcout << GRN << L"Покупець з ID " << productID << L" був успішно видалений.\n";
 				return;
 			}
@@ -556,16 +560,18 @@ void Admin::delOrderProduct(int orderID)
 			if (user.getRole() == CUSTOMER_CODE) 
 			{
 				Customer customer;
-				if (customer.getOrders().empty()) {
+				this->orders = customer.getOrders();
+				if (this->orders.empty()) {
 					std::wcout << RED << L"Наразі немає поточних замовлень.\n";
 				}
 				else
 				{
-					for (auto order = customer.getOrders().begin(); order != customer.getOrders().end(); order++)
+					for (auto order = this->orders.begin(); order != this->orders.end(); order++)
 					{
 						if (order->getId() == orderID)
 						{
-							customer.getOrders().erase(order);
+							this->orders.erase(order);
+							customer.setOrders(this->orders);
 							std::wcout << GRN << L"Замовлення з ID " << orderID << L" було успішно видалено.\n";
 							return;
 						}
@@ -603,19 +609,21 @@ void Admin::delAllOrdersProduct(int productID)
 			if (user.getRole() == CUSTOMER_CODE)
 			{
 				Customer customer;
-				if (customer.getOrders().empty())
+				this->orders = customer.getOrders();
+				if (this->orders.empty())
 				{
 					std::wcout << RED << L"Наразі немає поточних замовлень.\n";
 				}
 				else
 				{
-					for (auto order = customer.getOrders().begin(); order != customer.getOrders().end(); ++order)
+					for (auto order = this->orders.begin(); order != this->orders.end(); ++order)
 					{
-						for (auto product = order->getProducts().begin(); product != order->getProducts().end(); ++product)
+						for (auto product = this->orders.begin(); product != this->orders.end(); ++product)
 						{
 							if (product->getId() == productID)
 							{
-								customer.getOrders().erase(order);
+								this->orders.erase(order);
+								customer.setOrders(this->orders);
 								std::wcout << GRN << L"Продукт з ID " << productID << L" було успішно видалено.\n";
 								return;
 							}
@@ -654,13 +662,15 @@ void Admin::delAllOrdersAllProducts()
 			if (user.getRole() == CUSTOMER_CODE)
 			{
 				Customer customer;
-				if (customer.getOrders().empty())
+				this->orders = customer.getOrders();
+				if (this->orders.empty())
 				{
 					std::wcout << RED << L"Наразі немає поточних замовлень.\n";
 				}
 				else
 				{
-					customer.getOrders().clear();
+					this->orders.clear();
+					customer.setOrders(this->orders);
 					std::wcout << GRN << L"Усі замовлення на усі продукти успішно видалені.\n";
 				}
 			}
