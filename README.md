@@ -2,8 +2,6 @@
 
 Консольний додаток мовою С++, що симулює систему продажу товарів.
 
-Діаграми UML: https://drive.google.com/drive/folders/1Eki0HfROlWaZ-m0oNiulBwLbQCvpW_iZ?usp=share_link
-
 Учасники проекту:
 - Куваєв Микита - Team Leader (GitHub: <a href="https://github.com/Kuvaev-dev">Kuvaev-dev</a>)
 - Карнізов Ярослав - Project Manager (GitHub: <a href="https://github.com/Nerwe">Nerwe</a>)
