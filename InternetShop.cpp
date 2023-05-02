@@ -83,21 +83,21 @@ int main()
 							<< L"╭──────────────────────────────────────────────────────────╮\n"
 							<< L"│" << RED << L"                 Адміністратор: " << MAG << login << "                     " << WHT << L"│\n"
 							<< L"├──────────────────────────────────────────────────────────┤\n"
-							<< L"│" << CYN << L" 1. " << GRN << L" Додати клієнта.										" << WHT << L"│\n"
-							<< L"│" << CYN << L" 2. " << GRN << L" Редагувати інформацію про клієнта.					" << WHT << L"│\n"
-							<< L"│" << CYN << L" 3. " << GRN << L" Видалити клієнта.									" << WHT << L"│\n"
-							<< L"│" << CYN << L" 4. " << GRN << L" Переглянути всі товари.								" << WHT << L"│\n"
-							<< L"│" << CYN << L" 5. " << GRN << L" Знайти товар за назвою.								" << WHT << L"│\n"
-							<< L"│" << CYN << L" 6. " << GRN << L" Знайти товар за артиклем.							" << WHT << L"│\n"
-							<< L"│" << CYN << L" 7. " << GRN << L" Відкрити інформацію про товар.						" << WHT << L"│\n"
-							<< L"│" << CYN << L" 8. " << GRN << L" Додати товар.										" << WHT << L"│\n"
-							<< L"│" << CYN << L" 9. " << GRN << L" Редагувати інформацію про товар.						" << WHT << L"│\n"
-							<< L"│" << CYN << L" 10." << GRN << L" Видалити товар.										" << WHT << L"│\n"
-							<< L"│" << CYN << L" 11." << GRN << L" Переглянути всі замовлення на всі товари.			" << WHT << L"│\n"
-							<< L"│" << CYN << L" 12." << GRN << L" Видалити обране замовлення.							" << WHT << L"│\n"
-							<< L"│" << CYN << L" 13." << GRN << L" Переглянути всі замовлення певного товару.			" << WHT << L"│\n"
-							<< L"│" << CYN << L" 14." << GRN << L" Видалити абсолютно всі замовлення на всі товари.		" << WHT << L"│\n"
-							<< L"│" << CYN << L" 0. " << GRN << L" До попереднього меню.								" << WHT << L"│\n"
+							<< L"│" << CYN << L" 1. " << GRN << L" Додати клієнта.                                      " << WHT << L"│\n"
+							<< L"│" << CYN << L" 2. " << GRN << L" Редагувати інформацію про клієнта.                   " << WHT << L"│\n"
+							<< L"│" << CYN << L" 3. " << GRN << L" Видалити клієнта.                                    " << WHT << L"│\n"
+							<< L"│" << CYN << L" 4. " << GRN << L" Додати товар.                                        " << WHT << L"│\n"
+							<< L"│" << CYN << L" 5. " << GRN << L" Переглянути всі товари.                              " << WHT << L"│\n"
+							<< L"│" << CYN << L" 6. " << GRN << L" Відкрити інформацію про товар.                       " << WHT << L"│\n"
+							<< L"│" << CYN << L" 7. " << GRN << L" Редагувати інформацію про товар.                     " << WHT << L"│\n"
+							<< L"│" << CYN << L" 8. " << GRN << L" Знайти товар за назвою.                              " << WHT << L"│\n"
+							<< L"│" << CYN << L" 9. " << GRN << L" Знайти товар за артиклем.                            " << WHT << L"│\n"
+							<< L"│" << CYN << L" 10." << GRN << L" Видалити товар.                                      " << WHT << L"│\n"
+							<< L"│" << CYN << L" 11." << GRN << L" Переглянути всі замовлення на всі товари.            " << WHT << L"│\n"
+							<< L"│" << CYN << L" 12." << GRN << L" Видалити обране замовлення.                          " << WHT << L"│\n"
+							<< L"│" << CYN << L" 13." << GRN << L" Переглянути всі замовлення певного товару.           " << WHT << L"│\n"
+							<< L"│" << CYN << L" 14." << GRN << L" Видалити абсолютно всі замовлення на всі товари.     " << WHT << L"│\n"
+							<< L"│" << CYN << L" 0. " << GRN << L" До попереднього меню.                                " << WHT << L"│\n"
 							<< L"╰──────────────────────────────────────────────────────────╯\n"
 							<< L" Оберіть опцію (0 - 14): " << CYN;
 
@@ -124,18 +124,18 @@ int main()
 							wcout << WHT << L"Введіть пароль нового покупця: " << CYN;
 							wcin >> newCustomerPassword;
 
-							if (admin.getUsers().empty())
+							if (admin.getCustomers().empty())
 							{
-								admin.addCustomer(User(1, CUSTOMER_CODE, newCustomerLogin, newCustomerPassword));
+								admin.addCustomer(Customer(1, CUSTOMER_CODE, newCustomerLogin, newCustomerPassword));
 							}
 							else
 							{
-								admin.addCustomer(User(admin.getUsers().back().getId() + 1, CUSTOMER_CODE, newCustomerLogin, newCustomerPassword));
+								admin.addCustomer(Customer(admin.getCustomers().back().getId() + 1, CUSTOMER_CODE, newCustomerLogin, newCustomerPassword));
 							}
 
 							///////////////////////////////
 							wcout << L"USERS\n";
-							for (auto& c : admin.getUsers()) {
+							for (auto& c : admin.getCustomers()) {
 								wcout << L"id: " << c.getId() << '\n';
 								wcout << L"login: " << c.getLogin() << '\n';
 								wcout << L"pass: " << c.getPassword() << '\n';
@@ -187,63 +187,8 @@ int main()
 							std::system("pause");
 							std::system("cls");
 							break;
-							// 4. Переглянути всі товари
+							// 4. :Додати товар
 						case(4):
-							std::system("cls");
-
-							admin.showAllProducts();
-
-							std::system("pause");
-							std::system("cls");
-							break;
-							// 5. Знайти товар за назвою
-						case(5):
-							std::system("cls");
-
-							productName = L"";
-							wcout << WHT << L"Введіть назву товару: " << CYN;
-							wcin >> productName;
-
-							admin.showInfoProductByName(productName);
-
-							std::system("pause");
-							std::system("cls");
-							break;
-							// 6. Знайти товар за артиклем
-						case(6):
-							std::system("cls");
-
-							productArticle = L"";
-							wcout << WHT << L"Введіть артикль: " << CYN;
-							wcin >> productArticle;
-
-							admin.showInfoProductByArticle(productArticle);
-
-							std::system("pause");
-							std::system("cls");
-							break;
-							// 7. Відкрити інформацію про товар
-						case(7):
-							std::system("cls");
-
-							productID = 0;
-							do
-							{
-								wcout << WHT << L"Введіть ідентифікатор товару: " << CYN;
-								wcin >> productID;
-								if (productID < 0)
-								{
-									wcout << RED << L" Введіть коректні дані.\n";
-								}
-							} while (productID < 0);
-
-							admin.showProductInfoById(productID);
-
-							std::system("pause");
-							std::system("cls");
-							break;
-							// 8. Додати товар.
-						case(8):
 							std::system("cls");
 
 							productName = L"";
@@ -265,17 +210,26 @@ int main()
 							} while (productCost < 0);
 
 							if (shop.getProducts().empty()) {
-								admin.addProduct(Product(startID, productName, productArticle, productCost));
+								admin.addProduct(shop, Product(startID, productName, productArticle, productCost));
 							}
 							else {
-								admin.addProduct(Product(shop.getProducts().back().getId() + 1, productName, productArticle, productCost));
+								admin.addProduct(shop, Product(shop.getProducts().back().getId() + 1, productName, productArticle, productCost));
 							}
 
 							std::system("pause");
 							std::system("cls");
 							break;
-							// 9. Редагувати інформацію про товар
-						case(9):
+							// 5. Переглянути всі товари
+						case(5):
+							std::system("cls");
+
+							admin.showAllProducts(shop);
+
+							std::system("pause");
+							std::system("cls");
+							break;
+							// 6. Відкрити інформацію про товар
+						case(6):
 							std::system("cls");
 
 							productID = 0;
@@ -289,7 +243,53 @@ int main()
 								}
 							} while (productID < 0);
 
-							admin.editProduct(productID);
+							admin.showProductInfoById(shop, productID);
+
+							std::system("pause");
+							std::system("cls");
+							break;
+							// 7. Редагувати товар
+						case(7):
+							std::system("cls");
+
+							productID = 0;
+							do
+							{
+								wcout << WHT << L"Введіть ідентифікатор товару: " << CYN;
+								wcin >> productID;
+								if (productID < 0)
+								{
+									wcout << RED << L" Введіть коректні дані.\n";
+								}
+							} while (productID < 0);
+
+							admin.editProduct(shop, productID);
+
+							std::system("pause");
+							std::system("cls");
+							break;
+							//8. Знайти товар за назвою
+						case(8):
+							std::system("cls");
+
+							productName = L"";
+							wcout << WHT << L"Введіть назву товару: " << CYN;
+							wcin >> productName;
+
+							admin.showInfoProductByName(shop, productName);
+
+							std::system("pause");
+							std::system("cls");
+							break;
+							// 9. Знайти товар за артиклем
+						case(9):
+							std::system("cls");
+
+							productArticle = L"";
+							wcout << WHT << L"Введіть артикль: " << CYN;
+							wcin >> productArticle;
+
+							admin.showInfoProductByArticle(shop, productArticle);
 
 							std::system("pause");
 							std::system("cls");
@@ -309,7 +309,7 @@ int main()
 								}
 							} while (productID < 0);
 
-							admin.delProduct(productID);
+							admin.delProduct(shop, productID);
 
 							std::system("pause");
 							std::system("cls");
@@ -318,7 +318,7 @@ int main()
 						case(11):
 							std::system("cls");
 
-							admin.showAllOrdersAllProducts();
+							admin.showAllOrders();
 
 							std::system("pause");
 							std::system("cls");
@@ -327,18 +327,18 @@ int main()
 						case(12):
 							std::system("cls");
 
-							productID = 0;
+							orderID = 0;
 							do
 							{
 								wcout << WHT << L"Введіть ідентифікатор товару: " << CYN;
-								wcin >> productID;
-								if (productID < 0)
+								wcin >> orderID;
+								if (orderID < 0)
 								{
 									wcout << RED << L" Введіть коректні дані.\n";
 								}
-							} while (productID < 0);
+							} while (orderID < 0);
 
-							admin.delOrderProduct(productID);
+							admin.delOrderById(orderID);
 
 							std::system("pause");
 							std::system("cls");
@@ -389,7 +389,7 @@ int main()
 				}
 				else
 				{
-					for (auto& user : admin.getUsers())
+					for (auto& user : admin.getCustomers())
 					{
 						if (user.getLogin() == login && user.getPassword() == password)
 						{
@@ -401,18 +401,18 @@ int main()
 									option = 0;
 									wcout
 										<< WHT
-										<< L"╭──────────────────────────────────────────────────────────╮\n"
-										<< L"│" << RED << L"                 Покупець: " << MAG << user.getLogin() << "							" << WHT << L"│\n"
-										<< L"├──────────────────────────────────────────────────────────┤\n"
-										<< L"│" << CYN << L" 1. " << GRN << L" Переглянути всі товари.										" << WHT << L"│\n"
-										<< L"│" << CYN << L" 2. " << GRN << L" Знайти товар за назвою.										" << WHT << L"│\n"
-										<< L"│" << CYN << L" 3. " << GRN << L" Знайти товар за артиклем.									" << WHT << L"│\n"
-										<< L"│" << CYN << L" 4. " << GRN << L" Відкрити інформацію про товар.								" << WHT << L"│\n"
-										<< L"│" << CYN << L" 5. " << GRN << L" Купити товар.												" << WHT << L"│\n"
-										<< L"│" << CYN << L" 6. " << GRN << L" Переглянути свої замовлення.									" << WHT << L"│\n"
-										<< L"│" << CYN << L" 7. " << GRN << L" Відмовитися від замовлення.									" << WHT << L"│\n"
-										<< L"│" << CYN << L" 0. " << GRN << L" До попереднього меню.										" << WHT << L"│\n"
-										<< L"╰──────────────────────────────────────────────────────────╯\n"
+										<< L"╭────────────────────────────────────────╮\n"
+										<< L"│" << RED << L"           Покупець: " << MAG << user.getLogin() << "          " << WHT << L"│\n"
+										<< L"├────────────────────────────────────────┤\n"
+										<< L"│" << CYN << L" 1. " << GRN << L" Переглянути всі товари.            " << WHT << L"│\n"
+										<< L"│" << CYN << L" 2. " << GRN << L" Відкрити інформацію про товар.     " << WHT << L"│\n"
+										<< L"│" << CYN << L" 3. " << GRN << L" Знайти товар за артиклем.          " << WHT << L"│\n"
+										<< L"│" << CYN << L" 4. " << GRN << L" Знайти товар за назвою.            " << WHT << L"│\n"
+										<< L"│" << CYN << L" 5. " << GRN << L" Купити товар.                      " << WHT << L"│\n"
+										<< L"│" << CYN << L" 6. " << GRN << L" Переглянути свої замовлення.       " << WHT << L"│\n"
+										<< L"│" << CYN << L" 7. " << GRN << L" Відмовитися від замовлення.        " << WHT << L"│\n"
+										<< L"│" << CYN << L" 0. " << GRN << L" До попереднього меню.              " << WHT << L"│\n"
+										<< L"╰────────────────────────────────────────╯\n"
 										<< L" Оберіть опцію (0 - 7): " << CYN;
 
 									try
@@ -433,20 +433,27 @@ int main()
 									case(1):
 										std::system("cls");
 
-										customer.showAllProducts();
+										customer.showAllProducts(shop);
 
 										std::system("pause");
 										std::system("cls");
 										break;
-										// 2. Знайти товар за назвою
+										// 2. Відкрити інформацію про товар
 									case(2):
 										std::system("cls");
 
-										productName = L"";
-										wcout << WHT << L"Введіть назву товару: ";
-										wcin >> productName;
+										productID = 0;
+										do
+										{
+											wcout << WHT << L"Введіть ідентифікатор товару: " << CYN;
+											wcin >> productID;
+											if (productID < 0)
+											{
+												wcout << RED << L" Введіть коректні дані.\n";
+											}
+										} while (productID < 0);
 
-										customer.showInfoProductByName(productName);
+										customer.showInfoProduct(shop, productID);
 
 										std::system("pause");
 										std::system("cls");
@@ -459,27 +466,20 @@ int main()
 										wcout << WHT << L"Введіть артикль: ";
 										wcin >> productArticle;
 
-										customer.showInfoProductByArticle(productArticle);
+										customer.showInfoProductByArticle(shop, productArticle);
 
 										std::system("pause");
 										std::system("cls");
 										break;
-										// 4. Відкрити інформацію про товар
+										// 4. Знайти товар за назвою
 									case(4):
 										std::system("cls");
 
-										productID = 0;
-										do
-										{
-											wcout << WHT << L"Введіть ідентифікатор товару: " << CYN;
-											wcin >> productID;
-											if (productID < 0)
-											{
-												wcout << RED << L" Введіть коректні дані.\n";
-											}
-										} while (productID < 0);
+										productName = L"";
+										wcout << WHT << L"Введіть назву товару: ";
+										wcin >> productName;
 
-										customer.showInfoProduct(productID);
+										customer.showInfoProductByName(shop, productName);
 
 										std::system("pause");
 										std::system("cls");
@@ -488,7 +488,7 @@ int main()
 									case(5):
 										std::system("cls");
 
-										customer.showAllProducts();
+										customer.showAllProducts(shop);
 										productID = 0;
 										do
 										{
@@ -500,15 +500,13 @@ int main()
 											}
 										} while (productID < 0);
 
-										// ДОПИЛИТЬ
-
-										customer.buyProduct(productID);
+										customer.buyProduct(shop, productID);
 										break;
 										// 6. Переглянути свої замовлення
 									case(6):
 										std::system("cls");
 
-										customer.getOrders();
+										customer.showAllOrders();
 
 										std::system("pause");
 										std::system("cls");
@@ -528,7 +526,7 @@ int main()
 											}
 										} while (orderID < 0);
 
-										customer.cancelOrder(orderID);
+										customer.delOrder(orderID);
 
 										std::system("pause");
 										std::system("cls");

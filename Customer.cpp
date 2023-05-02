@@ -5,15 +5,10 @@ Customer::Customer() {}
 
 Customer::Customer(int _id, int _role, std::wstring _login, std::wstring _password) : User(_id, _role, _login, _password) {}
 
-std::deque<Order> Customer::getOrders() { return this->orders; }
-void Customer::setOrder(Order order)
-{
+Order Customer::getOrder() { return this->order; }
+void Customer::setOrder(Order _order) { this->order = _order; }
 
-}
-
-void Customer::setOrders(std::deque<Order>& orders) { this->orders = orders; }
-
-void Customer::showInfoProduct(int id)
+void Customer::showInfoProduct(Shop& shop, int id)
 {
 	if (shop.getProducts().empty()) 
 	{
@@ -33,8 +28,11 @@ void Customer::showInfoProduct(int id)
 	}
 }
 
-void Customer::buyProduct(int id)
+void Customer::buyProduct(Shop& shop, int id)
 {
+	std::deque<Product> orderProducts;
+	orderProducts = this->order.getProducts();
+
 	if (shop.getProducts().empty())
 	{
 		std::wcout << L"Наразі у магазині немає продуктів. Поверніться будь-ласка, пізніше.\n";
@@ -45,12 +43,8 @@ void Customer::buyProduct(int id)
 		{
 			if (product.getId() == id)
 			{
-				products.push_back(product);
-
-				for (auto& order : orders)
-				{
-					order.setProduct(product);
-				}
+				orderProducts.push_back(product);
+				this->order.setProducts(orderProducts);
 			}
 		}
 	}
@@ -58,43 +52,44 @@ void Customer::buyProduct(int id)
 
 void Customer::showAllOrders()
 {
-	if (orders.empty())
+	if (this->order.getProducts().empty())
 	{
 		std::wcout << L"Наразі у вас немає поточних замовлень.\n";
 	}
 	else
 	{
-		for (auto& order : orders)
+		for (auto& product : this->order.getProducts())
 		{
-			for (auto& product : order.getProducts())
-			{
-				std::wcout << L"\nНазва продукту: " << product.getName()
-					<< L"\nВартість продукту: " << product.getCost()
-					<< L"\nАртикль: " << product.getArticle() << '\n';
-			}
+			std::wcout << L"\nНазва продукту: " << product.getName()
+				<< L"\nВартість продукту: " << product.getCost()
+				<< L"\nАртикль: " << product.getArticle() << '\n';
 		}
 	}
 }
 
-void Customer::cancelOrder(int id)
+void Customer::delOrder(int id)
 {
-	if (orders.empty())
+	std::deque<Product> orderProducts;
+	orderProducts = this->order.getProducts();
+
+	if (this->order.getProducts().empty())
 	{
 		std::wcout << L"Наразі у вас немає поточних замовлень.\n";
 	}
 	else
 	{
-		for (auto& order : orders)
+		for (auto product = orderProducts.begin(); product != orderProducts.end(); ++product)
 		{
-			if (order.getId() == id)
+			if (product->getId() == id)
 			{
-				order.setActive(false);
+				orderProducts.erase(product);
+				this->order.setProducts(orderProducts);
 			}
 		}
 	}
 }
 
-void Customer::showAllProducts()
+void Customer::showAllProducts(Shop& shop)
 {
 	if (shop.getProducts().empty()) {
 		std::wcout << L"Наразі у магазині немає продуктів.\n";
@@ -110,7 +105,7 @@ void Customer::showAllProducts()
 	}
 }
 
-void Customer::showInfoProductByName(std::wstring productName)
+void Customer::showInfoProductByName(Shop& shop, std::wstring productName)
 {
 	if (shop.getProducts().empty()) {
 		std::wcout << L"Наразі у магазині немає продуктів.\n";
@@ -129,7 +124,7 @@ void Customer::showInfoProductByName(std::wstring productName)
 	}
 }
 
-void Customer::showInfoProductByArticle(std::wstring article)
+void Customer::showInfoProductByArticle(Shop& shop, std::wstring article)
 {
 	if (shop.getProducts().empty()) {
 		std::wcout << L"Наразі у магазині немає продуктів.\n";

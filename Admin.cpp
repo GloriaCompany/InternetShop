@@ -5,11 +5,11 @@ const std::array<wchar_t, 25> invalidSymbols = { '!','@','.','/','[',']','(',')'
 
 Admin::Admin(int _id, int _role, std::wstring _login, std::wstring _password) : User(_id, _role, _login, _password) {}
 
-std::deque<User> Admin::getUsers() { return this->users; }
-void Admin::setUsers(const std::deque<User>& users) { this->users = users; }
+std::deque<Customer> Admin::getCustomers() { return this->customers; }
+void Admin::setCustomers(const std::deque<Customer>& customers) { this->customers = customers; }
 
 // Додати клієнта
-void Admin::addCustomer(User newCustomer)
+void Admin::addCustomer(Customer newCustomer)
 {
 	constexpr int LOGIN_MIN_LENGTH = 5, LOGIN_MAX_LENGTH = 15;
 	constexpr int PASSWORD_MIN_LENGTH = 8, PASSWORD_MAX_LENGTH = 15;
@@ -32,15 +32,15 @@ void Admin::addCustomer(User newCustomer)
 	else 
 	{
 		bool isExists = false;
-		for (auto& user : users) 
+		for (auto& customer : customers)
 		{
-			if (newCustomer.getId() == user.getId())
+			if (newCustomer.getId() == customer.getId())
 			{
 				std::wcout << RED << L"Покупець з таким ID вже існує. Повторіть спробу, будь-ласка.\n" << WHT;
 				isExists = true;
 				break;
 			}
-			else if (newCustomer.getLogin() == user.getLogin())
+			else if (newCustomer.getLogin() == customer.getLogin())
 			{
 				std::wcout << RED << L"Покупець з таким логіном вже існує. Повторіть спробу, будь-ласка.\n" << WHT;
 				isExists = true;
@@ -49,7 +49,7 @@ void Admin::addCustomer(User newCustomer)
 		}
 		if (!isExists && newCustomer.getRole() == CUSTOMER_CODE) 
 		{
-			this->users.push_back(newCustomer);
+			this->customers.push_back(newCustomer);
 			std::wcout << GRN << L"Нового покупця успішно додано.\n";
 		}
 	}
@@ -58,14 +58,14 @@ void Admin::addCustomer(User newCustomer)
 // Редагувати інформацію про клієнта
 void Admin::editCustomer(int customerID)
 {
-	int userInput = 0;
+	int customerInput = 0;
 	constexpr int LOGIN_MIN_LENGTH = 5, LOGIN_MAX_LENGTH = 15;
 	constexpr int PASSWORD_MIN_LENGTH = 8, PASSWORD_MAX_LENGTH = 15;
 	std::wstring newLogin, newPassword;
 
-	for (auto& user : users) 
+	for (auto& customer : customers) 
 	{
-		if (user.getId() == customerID && user.getRole() == CUSTOMER_CODE)
+		if (customer.getId() == customerID && customer.getRole() == CUSTOMER_CODE)
 		{
 			while(true) 
 			{
@@ -81,7 +81,7 @@ void Admin::editCustomer(int customerID)
 					<< L" Оберіть опцію (0 - 3): " << CYN;
 				try
 				{
-					std::wcin >> userInput;
+					std::wcin >> customerInput;
 				}
 				catch (std::istream::failure e) 
 				{
@@ -92,11 +92,11 @@ void Admin::editCustomer(int customerID)
 					continue;
 				}
 
-				switch (userInput) 
+				switch (customerInput) 
 				{
 				case 1:
 					while (true) {
-						std::wcout << WHT << L"Введіть новий логін для покупця " << user.getLogin() << L": " << CYN;
+						std::wcout << WHT << L"Введіть новий логін для покупця " << customer.getLogin() << L": " << CYN;
 						std::wcin >> newLogin;
 
 						if (newLogin.find(' ') != std::wstring::npos) 
@@ -114,18 +114,18 @@ void Admin::editCustomer(int customerID)
 						else break;
 					}
 
-					user.setLogin(newLogin);
+					customer.setLogin(newLogin);
 					std::wcout << GRN << L"Логін успішно змінено."
-						<< WHT << L"\nНові дані користувача : \nID : " << user.getId()
-						<< WHT << L"\nЛогін: " << user.getLogin()
-						<< WHT << L"\nПароль : " << user.getPassword()
-						<< WHT << L"\nКод ролі : " << user.getRole() << L"\n";
+						<< WHT << L"\nНові дані користувача : \nID : " << customer.getId()
+						<< WHT << L"\nЛогін: " << customer.getLogin()
+						<< WHT << L"\nПароль : " << customer.getPassword()
+						<< WHT << L"\nКод ролі : " << customer.getRole() << L"\n";
 					break;
 
 				case 2:
 					while (true) 
 					{
-						std::wcout << WHT << L"Введіть новий пароль для покупця " << user.getLogin() << L": " << CYN;
+						std::wcout << WHT << L"Введіть новий пароль для покупця " << customer.getLogin() << L": " << CYN;
 						std::wcin >> newPassword;
 
 						if (newPassword.find(' ') != std::wstring::npos) 
@@ -143,43 +143,43 @@ void Admin::editCustomer(int customerID)
 						else break;
 					}
 
-					user.setPassword(newPassword);
+					customer.setPassword(newPassword);
 					std::wcout << GRN << L"Пароль успішно змінено."
-						<< WHT << L"\nНові дані користувача : \nID : " << user.getId()
-						<< WHT << L"\nЛогін: " << user.getLogin()
-						<< WHT << L"\nПароль : " << user.getPassword()
-						<< WHT << L"\nКод ролі : " << user.getRole();
+						<< WHT << L"\nНові дані користувача : \nID : " << customer.getId()
+						<< WHT << L"\nЛогін: " << customer.getLogin()
+						<< WHT << L"\nПароль : " << customer.getPassword()
+						<< WHT << L"\nКод ролі : " << customer.getRole();
 					break;
 
 				case 3:
-					userInput = 0;
+					customerInput = 0;
 					do 
 					{
 						std::wcout << WHT << L"Оберіть нову роль користувача у системі:\n1. Користувач.\n2. Адміністратор.\nВаш вибір: " << CYN;
-						std::wcin >> userInput;
-						if (userInput < CUSTOMER_CODE || userInput > ADMIN_CODE) 
+						std::wcin >> customerInput;
+						if (customerInput < CUSTOMER_CODE || customerInput > ADMIN_CODE) 
 						{
 							std::wcout << RED << L"Некоректний вибір. Повторіть спробу, будь-ласка.\n";
 						}
-					} while (userInput < CUSTOMER_CODE || userInput > ADMIN_CODE);
+					} while (customerInput < CUSTOMER_CODE || customerInput > ADMIN_CODE);
 
-					switch (userInput) {
+					switch (customerInput) {
 					case 1:
-						user.setRole(CUSTOMER_CODE);
+						customer.setRole(CUSTOMER_CODE);
 						std::wcout << GRN << L"Роль успішно змінено."
-							<< WHT << L"\nНові дані користувача : \nID : " << user.getId()
-							<< WHT << L"\nЛогін: " << user.getLogin()
-							<< WHT << L"\nПароль : " << user.getPassword()
-							<< WHT << L"\nКод ролі : " << user.getRole();
+							<< WHT << L"\nНові дані користувача : \nID : " << customer.getId()
+							<< WHT << L"\nЛогін: " << customer.getLogin()
+							<< WHT << L"\nПароль : " << customer.getPassword()
+							<< WHT << L"\nКод ролі : " << customer.getRole();
 						break;
 
 					case 2:
-						user.setRole(ADMIN_CODE);
+						customer.setRole(ADMIN_CODE);
 						std::wcout << GRN << L"Роль успішно змінено."
-							<< WHT << L"\nНові дані користувача : \nID : " << user.getId()
-							<< WHT << L"\nЛогін: " << user.getLogin()
-							<< WHT << L"\nПароль : " << user.getPassword()
-							<< WHT << L"\nКод ролі : " << user.getRole();
+							<< WHT << L"\nНові дані користувача : \nID : " << customer.getId()
+							<< WHT << L"\nЛогін: " << customer.getLogin()
+							<< WHT << L"\nПароль : " << customer.getPassword()
+							<< WHT << L"\nКод ролі : " << customer.getRole();
 						break;
 
 					default:
@@ -196,7 +196,7 @@ void Admin::editCustomer(int customerID)
 					break;
 				}
 
-				if (userInput == 0)
+				if (customerInput == 0)
 				{
 					break;
 				}
@@ -209,9 +209,9 @@ void Admin::editCustomer(int customerID)
 void Admin::delCustomer(int customerID)
 {
 	bool isExists = true;
-	for (auto user = users.begin(); user != users.end(); ++user) 
+	for (auto customer = customers.begin(); customer != customers.end(); ++customer) 
 	{
-		if (user->getRole() != CUSTOMER_CODE) 
+		if (customer->getRole() != CUSTOMER_CODE) 
 		{
 			isExists = false;
 		}
@@ -221,17 +221,17 @@ void Admin::delCustomer(int customerID)
 		std::wcout << RED << L"Наразі у магазині немає покупців.\n";
 	}
 
-	if (users.empty()) 
+	if (customers.empty()) 
 	{
 		std::wcout << RED << L"Наразі у магазині немає користувачів.\n";
 	} 
 	else 
 	{
-		for (auto user = users.begin(); user != users.end(); ++user)
+		for (auto customer = customers.begin(); customer != customers.end(); ++customer)
 		{
-			if (user->getId() == customerID && user->getRole() == CUSTOMER_CODE)
+			if (customer->getId() == customerID && customer->getRole() == CUSTOMER_CODE)
 			{
-				this->users.erase(user);
+				this->customers.erase(customer);
 				std::wcout << GRN << L"Покупець з ID " << customerID << L" був успішно видалений.\n";
 				return;
 			}
@@ -240,100 +240,8 @@ void Admin::delCustomer(int customerID)
 	}
 }
 
-// Переглянути всі товари
-void Admin::showAllProducts()
-{
-	if (shop.getProducts().empty()) 
-	{
-		std::wcout << RED << L"Наразі у магазині немає продуктів.\n";
-	} 
-	else 
-	{
-		std::wcout << WHT << L"Список усіх продуктів у магазині\n";
-		for (auto& product : shop.getProducts()) 
-		{
-			std::wcout << WHT << L"ID: " << product.getId()
-				<< WHT << L"\nНазва продукту: " << product.getName()
-				<< WHT << L"\nВартість продукту: " << product.getCost()
-				<< WHT << L"\nАртикль: " << product.getArticle() << '\n';
-		}
-	}
-}
-
-// Знайти товар за назвою
-void Admin::showInfoProductByName(std::wstring productName)
-{
-	if (shop.getProducts().empty()) 
-	{
-		std::wcout << RED << L"Наразі у магазині немає продуктів.\n";
-	} 
-	else 
-	{
-		for (auto& product : shop.getProducts()) 
-		{
-			if (product.getName() == productName) 
-			{
-				std::wcout << GRN << L"Продукт з іменем " << productName << L" успішно зайдено.\n"
-					<< WHT << L"Інформація про знайдений продукт:\n"
-					<< WHT << L"ID: " << product.getId()
-					<< WHT << L"\nНазва продукту: " << product.getName()
-					<< WHT << L"\nВартість продукту: " << product.getCost()
-					<< WHT << L"\nАртикль: " << product.getArticle() << '\n';
-			}
-		}
-	}
-}
-
-// Знайти товар за артиклем
-void Admin::showInfoProductByArticle(std::wstring article)
-{
-	if (shop.getProducts().empty())
-	{
-		std::wcout << RED << L"Наразі у магазині немає продуктів.\n";
-	} 
-	else 
-	{
-		for (auto& product : shop.getProducts()) 
-		{
-			if (product.getArticle() == article) 
-			{
-				std::wcout << GRN << L"Продукт з артиклем " << article << L" успішно зайдено.\n"
-					<< WHT << L"Інформація про знайдений продукт:\n"
-					<< WHT << L"ID: " << product.getId()
-					<< WHT << L"\nНазва продукту: " << product.getName()
-					<< WHT << L"\nВартість продукту: " << product.getCost()
-					<< WHT << L"\nАртикль: " << product.getArticle() << '\n';
-			}
-		}
-	}
-}
-
-// Відкрити інформацію про товар
-void Admin::showProductInfoById(int productID)
-{
-	if (shop.getProducts().empty()) 
-	{
-		std::wcout << RED << L"Наразі у магазині немає продуктів.\n";
-	} 
-	else 
-	{
-		for (auto& product : shop.getProducts()) 
-		{
-			if (product.getId() == productID) 
-			{
-				std::wcout << GRN << L"Продукт з ID " << productID << L" успішно зайдено.\n"
-					<< WHT << L"Інформація про знайдений продукт:\n"
-					<< WHT << L"ID: " << product.getId()
-					<< WHT << L"\nНазва продукту: " << product.getName()
-					<< WHT << L"\nВартість продукту: " << product.getCost()
-					<< WHT << L"\nАртикль: " << product.getArticle() << '\n';
-			}
-		}
-	}
-}
-
 // Додати товар
-void Admin::addProduct(Product newProduct)
+void Admin::addProduct(Shop& shop, Product newProduct)
 {
 	constexpr double MIN_COST = 1., MAX_COST = 100000000;
 
@@ -364,9 +272,9 @@ void Admin::addProduct(Product newProduct)
 }
 
 // Редагувати інформацію про товар
-void Admin::editProduct(int productID)
+void Admin::editProduct(Shop& shop, int productID)
 {
-	int userInput = 0;
+	int customerInput = 0;
 	constexpr int NAME_MIN_LENGTH = 5, NAME_MAX_LENGTH = 20;
 	constexpr double MIN_COST = 1., MAX_COST = 100000000;
 	constexpr int MENU_MIN_SELECTION = 1, MENU_MAX_SELECTION = 2;
@@ -380,17 +288,17 @@ void Admin::editProduct(int productID)
 		if (product.getId() == productID) 
 		{
 			std::wcout << WHT
-				<< L"╭──────────────────────────────────╮\n"
-				<< L"│" << RED << L"   Зміна параметрів продукту				   " << WHT << L"│\n"
+				<< L"╭──────────────────────────────────╮\n"                       
+				<< L"│" << RED << L"   Зміна параметрів продукту      " << WHT << L"│\n"
 				<< L"├──────────────────────────────────┤\n"
-				<< L"│" << CYN << L" 1. " << GRN << L"Назва продукту.			   " << WHT << L"│\n"
-				<< L"│" << CYN << L" 2. " << GRN << L"Вартість продукту.		   " << WHT << L"│\n"
-				<< L"│" << CYN << L" 3. " << GRN << L"До попереднього меню.	       " << WHT << L"│\n"
+				<< L"│" << CYN << L" 1. " << GRN << L"Назва продукту.               " << WHT << L"│\n"
+				<< L"│" << CYN << L" 2. " << GRN << L"Вартість продукту.            " << WHT << L"│\n"
+				<< L"│" << CYN << L" 3. " << GRN << L"До попереднього меню.         " << WHT << L"│\n"
 				<< L"╰──────────────────────────────────╯\n"
 				<< L" Ваш вибір : " << CYN;
 			try
 			{
-				std::wcin >> userInput;
+				std::wcin >> customerInput;
 			}
 			catch (std::istream::failure e) {
 				system("cls");
@@ -400,7 +308,7 @@ void Admin::editProduct(int productID)
 				continue;
 			}
 
-			switch (userInput) 
+			switch (customerInput) 
 			{
 			case 1:
 				while (true) 
@@ -454,7 +362,7 @@ void Admin::editProduct(int productID)
 }
 
 // Видалити товар
-void Admin::delProduct(int productID)
+void Admin::delProduct(Shop& shop, int productID)
 {
 	this->products = shop.getProducts();
 
@@ -470,21 +378,21 @@ void Admin::delProduct(int productID)
 			{
 				this->products.erase(product);
 				shop.setProducts(this->products);
-				std::wcout << GRN << L"Покупець з ID " << productID << L" був успішно видалений.\n";
+				std::wcout << GRN << L"Товар з ID " << productID << L" був успішно видалений.\n";
 				return;
 			}
 		}
-		std::wcout << RED << L"Покупця з ID " << productID << L" не знайдено.\n";
+		std::wcout << RED << L"Товар з ID " << productID << L" не знайдено.\n";
 	}
 }
 
 // Переглянути всі замовлення на всі товари
-void Admin::showAllOrdersAllProducts()
+void Admin::showAllOrders()
 {
 	bool isExists = true;
-	for (auto user = users.begin(); user != users.end(); ++user)
+	for (auto customer = customers.begin(); customer != customers.end(); ++customer)
 	{
-		if (user->getRole() != CUSTOMER_CODE)
+		if (customer->getRole() != CUSTOMER_CODE)
 		{
 			isExists = false;
 		}
@@ -494,42 +402,38 @@ void Admin::showAllOrdersAllProducts()
 		std::wcout << RED << L"Наразі у магазині немає покупців.\n";
 	}
 
-	if (users.empty())
+	if (customers.empty())
 	{
-		std::wcout << RED << L"Наразі у магазині немає користувачів.\n";
+		std::wcout << RED << L"Наразі у магазині немає покупців.\n";
 	}
 	else 
 	{
-		for (auto& user : users) 
+		for (auto& customer : customers) 
 		{
-			if (user.getRole() == CUSTOMER_CODE) 
+			if (customer.getRole() == CUSTOMER_CODE)
 			{
-				Customer customer;
-				if (customer.getOrders().empty())
+				std::wcout << WHT << L"\nСписок продуктів покупця: " << MAG << customer.getLogin() << "\n";
+				if (customer.getOrder().getProducts().empty())
 				{
 					std::wcout << RED << L"Наразі немає поточних замовлень.\n";
 				}
 				else
 				{
-					for (auto& order : customer.getOrders())
+					for (auto& product : customer.getOrder().getProducts())
 					{
-						std::wcout << WHT << L"ID: " << order.getId() << L"\nСписок продуктів:\n";
-						for (auto& product : order.getProducts())
-						{
-							std::wcout << WHT << L"ID: " << product.getId()
-								<< WHT << L"\nІм'я продукту: " << product.getName()
-								<< WHT << L"\nВартість: " << product.getCost()
-								<< WHT << L"\nАртикль: " << product.getArticle() << '\n';
-						}
-						std::wcout << WHT << L"Загальна сума замовлення: " << order.getTotalAmount() << '\n';
-						if (order.getActive() == true)
-						{
-							std::wcout << WHT << L"Статус замовлення: Активне.";
-						}
-						else if (order.getActive() == false)
-						{
-							std::wcout << WHT << L"Статус замовлення: Неактивне.";
-						}
+						std::wcout << WHT << L"ID: " << product.getId()
+							<< WHT << L"\nІм'я продукту: " << product.getName()
+							<< WHT << L"\nВартість: " << product.getCost()
+							<< WHT << L"\nАртикль: " << product.getArticle() << '\n';
+					}
+					std::wcout << WHT << L"Загальна сума замовлення: " << customer.getOrder().getTotalAmount() << '\n';
+					if (customer.getOrder().getActive() == true)
+					{
+						std::wcout << WHT << L"Статус замовлення: Активне.";
+					}
+					else if (customer.getOrder().getActive() == false)
+					{
+						std::wcout << WHT << L"Статус замовлення: Неактивне.";
 					}
 				}
 			}
@@ -538,12 +442,12 @@ void Admin::showAllOrdersAllProducts()
 }
 
 // Видалити обране замовлення
-void Admin::delOrderProduct(int orderID)
+void Admin::delOrderById(int orderID)
 {
 	bool isExists = true;
-	for (auto user = users.begin(); user != users.end(); ++user)
+	for (auto customer = customers.begin(); customer != customers.end(); ++customer)
 	{
-		if (user->getRole() != CUSTOMER_CODE)
+		if (customer->getRole() != CUSTOMER_CODE)
 		{
 			isExists = false;
 		}
@@ -553,29 +457,26 @@ void Admin::delOrderProduct(int orderID)
 		std::wcout << RED << L"Наразі у магазині немає покупців.\n";
 	}
 
-	if (users.empty())
+	if (customers.empty())
 	{
 		std::wcout << RED << L"Наразі у магазині немає користувачів.\n";
 	}
 	else
 	{
-		for (auto& user : users) 
+		for (auto& customer : customers)
 		{
-			if (user.getRole() == CUSTOMER_CODE) 
+			if (customer.getRole() == CUSTOMER_CODE)
 			{
-				Customer customer;
-				this->orders = customer.getOrders();
-				if (this->orders.empty()) {
+				if (customer.getOrder().getProducts().empty()) {
 					std::wcout << RED << L"Наразі немає поточних замовлень.\n";
 				}
 				else
 				{
-					for (auto order = this->orders.begin(); order != this->orders.end(); order++)
+					for (auto order = customer.getOrder().getProducts().begin(); order != customer.getOrder().getProducts().end(); order++)
 					{
 						if (order->getId() == orderID)
 						{
-							this->orders.erase(order);
-							customer.setOrders(this->orders);
+							customer.getOrder().getProducts().erase(order);
 							std::wcout << GRN << L"Замовлення з ID " << orderID << L" було успішно видалено.\n";
 							return;
 						}
@@ -590,9 +491,9 @@ void Admin::delOrderProduct(int orderID)
 void Admin::delAllOrdersProduct(int productID)
 {
 	bool isExists = true;
-	for (auto user = users.begin(); user != users.end(); ++user)
+	for (auto customer = customers.begin(); customer != customers.end(); ++customer)
 	{
-		if (user->getRole() != CUSTOMER_CODE)
+		if (customer->getRole() != CUSTOMER_CODE)
 		{
 			isExists = false;
 		}
@@ -602,32 +503,29 @@ void Admin::delAllOrdersProduct(int productID)
 		std::wcout << RED << L"Наразі у магазині немає покупців.\n";
 	}
 
-	if (users.empty())
+	if (customers.empty())
 	{
 		std::wcout << RED << L"Наразі у магазині немає користувачів.\n";
 	}
 	else
 	{
-		for (auto& user : users) 
+		for (auto& customer : customers)
 		{
-			if (user.getRole() == CUSTOMER_CODE)
+			if (customer.getRole() == CUSTOMER_CODE)
 			{
-				Customer customer;
-				this->orders = customer.getOrders();
-				if (this->orders.empty())
+				if (customer.getOrder().getProducts().empty())
 				{
 					std::wcout << RED << L"Наразі немає поточних замовлень.\n";
 				}
 				else
 				{
-					for (auto order = this->orders.begin(); order != this->orders.end(); ++order)
+					for (auto order = customer.getOrder().getProducts().begin(); order != customer.getOrder().getProducts().end(); ++order)
 					{
 						for (auto product = this->orders.begin(); product != this->orders.end(); ++product)
 						{
 							if (product->getId() == productID)
 							{
-								this->orders.erase(order);
-								customer.setOrders(this->orders);
+								customer.getOrder().getProducts().erase(order);
 								std::wcout << GRN << L"Продукт з ID " << productID << L" було успішно видалено.\n";
 								return;
 							}
@@ -643,9 +541,9 @@ void Admin::delAllOrdersProduct(int productID)
 void Admin::delAllOrdersAllProducts()
 {
 	bool isExists = true;
-	for (auto user = users.begin(); user != users.end(); ++user)
+	for (auto customer = customers.begin(); customer != customers.end(); ++customer)
 	{
-		if (user->getRole() != CUSTOMER_CODE)
+		if (customer->getRole() != CUSTOMER_CODE)
 		{
 			isExists = false;
 		}
@@ -655,28 +553,117 @@ void Admin::delAllOrdersAllProducts()
 		std::wcout << RED << L"Наразі у магазині немає покупців.\n";
 	}
 
-	if (users.empty())
+	if (customers.empty())
 	{
 		std::wcout << RED << L"Наразі у магазині немає користувачів.\n";
 	}
 	else
 	{
-		for (auto& user : users)
+		for (auto& customer : customers)
 		{
-			if (user.getRole() == CUSTOMER_CODE)
+			if (customer.getRole() == CUSTOMER_CODE)
 			{
-				Customer customer;
-				this->orders = customer.getOrders();
 				if (this->orders.empty())
 				{
 					std::wcout << RED << L"Наразі немає поточних замовлень.\n";
 				}
 				else
 				{
-					this->orders.clear();
-					customer.setOrders(this->orders);
+					customer.getOrder().getProducts().clear();
 					std::wcout << GRN << L"Усі замовлення на усі продукти успішно видалені.\n";
 				}
+			}
+		}
+	}
+}
+
+// Переглянути всі товари
+void Admin::showAllProducts(Shop& shop)
+{
+	if (shop.getProducts().empty())
+	{
+		std::wcout << RED << L"Наразі у магазині немає продуктів.\n";
+	}
+	else
+	{
+		std::wcout << WHT << L"Список усіх продуктів у магазині\n";
+		for (auto& product : shop.getProducts())
+		{
+			std::wcout << WHT << L"ID: " << product.getId()
+				<< WHT << L"\nНазва продукту: " << product.getName()
+				<< WHT << L"\nВартість продукту: " << product.getCost()
+				<< WHT << L"\nАртикль: " << product.getArticle() << '\n';
+		}
+	}
+}
+
+// Відкрити інформацію про товар
+void Admin::showProductInfoById(Shop& shop, int productID)
+{
+	if (shop.getProducts().empty())
+	{
+		std::wcout << RED << L"Наразі у магазині немає продуктів.\n";
+	}
+	else
+	{
+		for (auto& product : shop.getProducts())
+		{
+			if (product.getId() == productID)
+			{
+				std::wcout << GRN << L"Продукт з ID " << productID << L" успішно зайдено.\n"
+					<< WHT << L"Інформація про знайдений продукт:\n"
+					<< WHT << L"ID: " << product.getId()
+					<< WHT << L"\nНазва продукту: " << product.getName()
+					<< WHT << L"\nВартість продукту: " << product.getCost()
+					<< WHT << L"\nАртикль: " << product.getArticle() << '\n';
+			}
+		}
+	}
+}
+
+// Знайти товар за назвою
+void Admin::showInfoProductByName(Shop& shop, std::wstring productName)
+{
+	if (shop.getProducts().empty())
+	{
+		std::wcout << RED << L"Наразі у магазині немає продуктів.\n";
+	}
+	else
+	{
+		for (auto& product : shop.getProducts())
+		{
+			if (product.getName() == productName)
+			{
+				std::wcout << GRN << L"Продукт з іменем " << productName << L" успішно зайдено.\n"
+					<< WHT << L"Інформація про знайдений продукт:\n"
+					<< WHT << L"ID: " << product.getId()
+					<< WHT << L"\nНазва продукту: " << product.getName()
+					<< WHT << L"\nВартість продукту: " << product.getCost()
+					<< WHT << L"\nАртикль: " << product.getArticle() << '\n';
+			}
+		}
+	}
+}
+
+// Знайти товар за артиклем
+void Admin::showInfoProductByArticle(Shop& shop, std::wstring article)
+{
+	if (shop.getProducts().empty())
+	{
+		std::wcout << RED << L"Наразі у магазині немає продуктів.\n";
+	}
+	else
+	{
+		for (auto& product : shop.getProducts())
+		{
+			if (product.getArticle() == article)
+			{
+				std::wcout << GRN << L"Продукт з артиклем " << article << L" успішно зайдено.\n"
+					<< WHT << L"Інформація про знайдений продукт:\n"
+					<< WHT << L"ID: " << product.getId()
+					<< WHT << L"\nНазва продукту: " << product.getName()
+					<< WHT << L"\nВартість продукту: " << product.getCost()
+					<< WHT << L"\nАртикль: " << product.getArticle() << '\n';
 			}
 		}
 	}
